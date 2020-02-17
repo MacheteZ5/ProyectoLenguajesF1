@@ -8,7 +8,7 @@ namespace Proyecto_1229918_Montenegro
 {
     public struct Elements
     {
-        public char caracter;
+        public string caracter;
     }
     public class Node        
     {
@@ -31,7 +31,7 @@ namespace Proyecto_1229918_Montenegro
             if(Raiz == null)
             {
                 Elements elemento = new Elements();
-                elemento.caracter = '.';
+                elemento.caracter = ".";
                 Node NRaiz = new Node(elemento);
                 NRaiz.hijoIZ = valor;
                 Raiz = NRaiz;
@@ -39,19 +39,20 @@ namespace Proyecto_1229918_Montenegro
             else
             {
                 IngresarAux(valor);
+                
             }
         }
-        void IngresarAux(Node valor)
+        void IngresarAux(Node Value)
         {
-            Node VAux = new Node(valor.elemento);
-            if(Raiz.hijoDR==null)
+            Node VAux = new Node(Value.elemento);
+            if (Raiz.hijoDR == null)
             {
                 Raiz.hijoDR = VAux;
             }
             else
             {
                 Elements elemento = new Elements();
-                elemento.caracter = '.';
+                elemento.caracter = ".";
                 Node NRaiz = new Node(elemento);
                 NRaiz.hijoIZ = Raiz;
                 NRaiz.hijoDR = VAux;
@@ -59,6 +60,4 @@ namespace Proyecto_1229918_Montenegro
             }
         }
     }
-
-
 }
