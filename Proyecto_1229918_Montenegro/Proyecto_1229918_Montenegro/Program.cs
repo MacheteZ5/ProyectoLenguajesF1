@@ -12,16 +12,28 @@ namespace Proyecto_1229918_Montenegro
     {
         static void Main(string[] args)
         {
-            //terminologías
-            var T0 = "*+?)";
-            var T1 = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
-            var T2 = ' ';
-            var T3 = "0123456789";
+            //terminologías que se van a utilizar
+            //Terminologias SETS
+            var Q = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+            var V = ' ';
+            var N = "0123456789";
+            var E = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789";
+            var Z = "'E'..'E'";
+            var W = "'E'";
+            var Y = "CHR(N)";
+            var X = "CHR(N)..CHR(N)";
+            var P = "+";
+            //Terminologías Tokens
+            //Terminologías ACTIONS
+            //Terminologías ERROR
+
+
             var T4 = "abcdefghijklmnñopqrstuvwxyz";
             var T5 = "-'(T1|T3|T4)'..'(T1|T3|T4)'-'(T1|T3|T4)'-CHR(N)..CHR(N)-";
             var T6 = ".";
             var T7 = "TOKEN";
-            var ExpSets = "(T1+)(T2+)(=)(T2+)(T5T6?+)";
+            //Expresiones A utilizar
+            var ExpSets = "((Q+.V*.=.V*).((z|w|x|y).P?)+).#";
             var ExpTokens = "(T7)(T2+)(T3+)(=)(T2+)...";
             var ExpActions = "";
             var ExpErrors = "ERROR";
@@ -39,20 +51,23 @@ namespace Proyecto_1229918_Montenegro
             }
             AuxClass nuevo = new AuxClass();
             nuevo.LecturaArchivo(File,StringList,ref ListaSets,ref ListaTokens, ref ListaActions, ref ListaErrors);
-            //Validar SETS
             if (ListaSets.Count() != 0)
             {
+                //crear Arbol de expresion
                 ListaSets.Remove(ListaSets[0]);
                 foreach (ListNode ListNode in ListaSets)
                 {
                     var NoEncontrado = string.Empty;
-                    var TreeSETS = nuevo.CreaciónArbol(ExpSets);
+                    var TreeSETS = new Tree();
+                    TreeSETS.Raiz = nuevo.CreateTree(ExpSets);
+                    //Provar nuevo cambio
+                    //var TreeSETS = nuevo.CreaciónArbol(ExpSets);
                     foreach (char caracter in ListNode.frase)
                     {
                         var chains = string.Empty;
                         NoEncontrado = string.Empty;
                         var CAUT5yT6 = string.Empty;
-                        TreeSETS.RecorrerSets(TreeSETS.Raiz, chains, ref NoEncontrado, caracter, T1, T2, T3, T4, T5, ref CAUT5yT6);
+                        //TreeSETS.RecorrerSets(TreeSETS.Raiz, chains, ref NoEncontrado, caracter, T1, T2, T3, T4, T5, ref CAUT5yT6);
                         if (NoEncontrado == "CadenaError")
                         {
                             Console.WriteLine("Error en la linea: " + ListNode.Nlinea);
@@ -86,7 +101,7 @@ namespace Proyecto_1229918_Montenegro
                         {
                             var chains = string.Empty;
                             NoEncontrado = string.Empty;
-                            TreeTokens.RecorrerTokens(TreeTokens.Raiz, chains, ref NoEncontrado, caracter, T7, Auxchain,T2);
+                            //TreeTokens.RecorrerTokens(TreeTokens.Raiz, chains, ref NoEncontrado, caracter, T7, Auxchain,T2);
                             if(NoEncontrado== "CadenaError")
                             {
                                 Console.WriteLine("Su Linea: "+ListNode.Nlinea+" Posee un error");
@@ -95,7 +110,7 @@ namespace Proyecto_1229918_Montenegro
                             }
                             NoEncontrado = string.Empty;
                             Auxchain = string.Empty;
-                            TreeTokens.RecorrerTokens(TreeTokens.Raiz, chains, ref NoEncontrado, caracter, T7, Auxchain,T2);
+                           // TreeTokens.RecorrerTokens(TreeTokens.Raiz, chains, ref NoEncontrado, caracter, T7, Auxchain,T2);
                             contador++;
                         }
                         else
@@ -104,7 +119,7 @@ namespace Proyecto_1229918_Montenegro
                             {
                                 var chains = string.Empty;
                                 NoEncontrado = string.Empty;
-                                TreeTokens.RecorrerTokens(TreeTokens.Raiz, chains, ref NoEncontrado, caracter, T7, Auxchain,T2);
+                             //   TreeTokens.RecorrerTokens(TreeTokens.Raiz, chains, ref NoEncontrado, caracter, T7, Auxchain,T2);
                             }
                         }
                         Auxchain += caracter;

@@ -117,5 +117,107 @@ namespace Proyecto_1229918_Montenegro
             }
             return TreeSETS;
         }
+
+        public Tree Crear(string EXP)
+        {
+            var TreeSETS = new Tree();
+            var Pila = new Stack<string>();
+            var Encontrar = false;
+            var cadena = string.Empty;
+            foreach(char car in EXP)
+            {
+                if (car =='(')
+                {
+                    Encontrar = true;
+                }
+                if(Encontrar&&car!='(')
+                {
+                    cadena += car;
+                }
+                else
+                {
+                }
+            }
+            return TreeSETS;
+        }
+        //desde aquí
+        Node CreateNode(string cadena)
+        {
+            Elements elemento = new Elements();
+            elemento.caracter = cadena;
+            var TreeNode = new Node(elemento);
+            return TreeNode;
+        }
+        Stack<Node> JuntarNodos(Node Aux, Stack<Node> PS)
+        {
+            Node AuxN = PS.Pop();
+            Aux.hijoIZ = AuxN;
+            PS.Push(Aux);
+            return PS;
+        }
+        void PopPilaT(ref Stack<Node> PS, ref Stack<char> PT)
+        {
+            var caracterAux = ' ';
+            while (caracterAux != '('&&PT.Count()!=0)
+            {
+                caracterAux = PT.Pop();
+                if (caracterAux != '(')
+                {
+                    Node HD = PS.Pop();
+                    Node HI = PS.Pop();
+                    //
+                    var Ref = string.Empty;
+                    Ref += caracterAux;
+                    var TreeSETSNode = CreateNode(Ref);
+                    TreeSETSNode.hijoDR = HD;
+                    TreeSETSNode.hijoIZ = HI;
+                    PS.Push(TreeSETSNode);
+                }
+            }
+        }
+
+        public Node CreateTree(string ExpSets)
+        {
+            var T = "(.|";
+            var S = "+?*";
+            var PT = new Stack<char>();
+            var PS = new Stack<Node>();
+            foreach (char caracter in ExpSets)
+            {
+                if (T.Contains(caracter))
+                {
+                    PT.Push(caracter);
+                }
+                else
+                {
+                    if (caracter == ')')
+                    {
+                        PopPilaT(ref PS, ref PT);
+                    }
+                    else
+                    {
+                        if (S.Contains(caracter))
+                        {
+                            var carct = string.Empty;
+                            carct += caracter;
+                            var TreeSETSNode = CreateNode(carct);
+                            PS = JuntarNodos(TreeSETSNode, PS);
+                        }
+                        else
+                        {
+                            string carct = string.Empty;
+                            carct += caracter;
+                            var TreeSETSNode = CreateNode(carct);
+                            PS.Push(TreeSETSNode);
+                        }
+                    }
+                }
+            }
+            if (PT.Count != 0)
+            {
+                PopPilaT(ref PS, ref PT);
+            }
+            return PS.Pop();
+        }
     }
 }
