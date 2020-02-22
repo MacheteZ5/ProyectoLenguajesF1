@@ -16,27 +16,26 @@ namespace Proyecto_1229918_Montenegro
             //Terminologias SETS
             var Q = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
             var V = ' ';
+            var U = "'";
             var N = "0123456789";
-            var E = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789";
-            var Z = "'E'..'E'";
-            var W = "'E'";
-            var Y = "CHR(N)";
-            var X = "CHR(N)..CHR(N)";
+            var E = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789_+-*/";
+            var z = "'E'..'E'";
+            var w = "'E'";
+            var y = "CHR(N)";
+            var x = "CHR(NN)..CHR(NNN)";
             var P = "+";
             //Terminologías Tokens
             //Terminologías ACTIONS
             //Terminologías ERROR
-
-
-            var T4 = "abcdefghijklmnñopqrstuvwxyz";
-            var T5 = "-'(T1|T3|T4)'..'(T1|T3|T4)'-'(T1|T3|T4)'-CHR(N)..CHR(N)-";
             var T6 = ".";
             var T7 = "TOKEN";
             //Expresiones A utilizar
+            //Expresión SETS
             var ExpSets = "((Q+.V*.=.V*).((z|w|x|y).P?)+).#";
-            var ExpTokens = "(T7)(T2+)(T3+)(=)(T2+)...";
+            //EXpresión TOKENS
+            var ExpTokens = "";
             var ExpActions = "";
-            var ExpErrors = "ERROR";
+            var ExpErrors = "";
             //Listas
             var StringList = new List<string>();
             var ListaSets = new List<ListNode>();
@@ -57,25 +56,12 @@ namespace Proyecto_1229918_Montenegro
                 ListaSets.Remove(ListaSets[0]);
                 foreach (ListNode ListNode in ListaSets)
                 {
-                    var NoEncontrado = string.Empty;
+                    var Continuar = string.Empty;
                     var TreeSETS = new Tree();
+                    var encontrar = false;
                     TreeSETS.Raiz = nuevo.CreateTree(ExpSets);
-                    //Provar nuevo cambio
-                    //var TreeSETS = nuevo.CreaciónArbol(ExpSets);
-                    foreach (char caracter in ListNode.frase)
-                    {
-                        var chains = string.Empty;
-                        NoEncontrado = string.Empty;
-                        var CAUT5yT6 = string.Empty;
-                        //TreeSETS.RecorrerSets(TreeSETS.Raiz, chains, ref NoEncontrado, caracter, T1, T2, T3, T4, T5, ref CAUT5yT6);
-                        if (NoEncontrado == "CadenaError")
-                        {
-                            Console.WriteLine("Error en la linea: " + ListNode.Nlinea);
-                            Console.ReadLine();
-                            break;
-                        }
-                    }
-                    if (NoEncontrado == "CadenaError")
+                    TreeSETS.RecorrerSets(TreeSETS.Raiz, TreeSETS.Raiz,TreeSETS.Raiz,encontrar,ref ListNode.frase, ref Continuar, Q,V,U,z,E,x,y,w,P);
+                    if (Continuar == "NPC")
                     {
                         break;
                     }
@@ -91,7 +77,7 @@ namespace Proyecto_1229918_Montenegro
                 ListaTokens.Remove(ListaTokens[0]);
                 foreach (ListNode ListNode in ListaTokens)
                 {
-                    var TreeTokens = nuevo.CreaciónArbol(ExpTokens);
+                    //var TreeTokens = nuevo.CreaciónArbol(ExpTokens);
                     var contador = 0;
                     var Auxchain = string.Empty;
                     var NoEncontrado = string.Empty;

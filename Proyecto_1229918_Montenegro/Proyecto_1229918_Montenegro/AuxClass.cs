@@ -9,6 +9,7 @@ namespace Proyecto_1229918_Montenegro
 {
     public class AuxClass
     {
+        //desde aquí
         public void LecturaArchivo(string File, List<string> StringList, ref List<ListNode> ListaSets, ref List<ListNode> ListaTokens, ref List<ListNode> ListaActions, ref List<ListNode> ListaErrors)
         {
             var EsSETS = false;
@@ -91,56 +92,6 @@ namespace Proyecto_1229918_Montenegro
                 }
             }
         }
-        public Tree CreaciónArbol(string ExpSets)
-        {
-            var TreeSETS = new Tree();
-            var chain = string.Empty;
-            var entreparentesis = false;
-            foreach (char bit in ExpSets)
-            {
-                if ((bit == '(') || (entreparentesis))
-                {
-                    entreparentesis = true;
-                    chain += bit;
-                }
-                if (bit == ')')
-                {
-                    char[] Aux = { '(', ')' };
-                    chain = chain.Trim(Aux);
-                    Elements elemento = new Elements();
-                    elemento.caracter = chain;
-                    Node NAux = new Node(elemento);
-                    TreeSETS.Ingresar(NAux);
-                    entreparentesis = false;
-                    chain = string.Empty;
-                }
-            }
-            return TreeSETS;
-        }
-
-        public Tree Crear(string EXP)
-        {
-            var TreeSETS = new Tree();
-            var Pila = new Stack<string>();
-            var Encontrar = false;
-            var cadena = string.Empty;
-            foreach(char car in EXP)
-            {
-                if (car =='(')
-                {
-                    Encontrar = true;
-                }
-                if(Encontrar&&car!='(')
-                {
-                    cadena += car;
-                }
-                else
-                {
-                }
-            }
-            return TreeSETS;
-        }
-        //desde aquí
         Node CreateNode(string cadena)
         {
             Elements elemento = new Elements();
@@ -175,7 +126,6 @@ namespace Proyecto_1229918_Montenegro
                 }
             }
         }
-
         public Node CreateTree(string ExpSets)
         {
             var T = "(.|";
