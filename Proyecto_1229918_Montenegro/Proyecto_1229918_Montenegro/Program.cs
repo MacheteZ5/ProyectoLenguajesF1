@@ -18,23 +18,27 @@ namespace Proyecto_1229918_Montenegro
             var V = ' ';
             var U = "'";
             var N = "0123456789";
-            var E = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789_+-*/";
+            var E = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789_+-*/{}[]><.()&%$,;";
             var z = "'E'..'E'";
             var w = "'E'";
-            var y = "CHR(N)";
+            var y = "CHR(NN)";
             var x = "CHR(NN)..CHR(NNN)";
             var P = "+";
             //Terminologías Tokens
+            var X = '"';
+            var C = E + X;
+            var H = "'C'";
+            var K = "TOKEN";
             //Terminologías ACTIONS
             //Terminologías ERROR
-            var T6 = ".";
-            var T7 = "TOKEN";
             //Expresiones A utilizar
             //Expresión SETS
             var ExpSets = "((Q+.V*.=.V*).((z|w|x|y).P?)+).#";
             //EXpresión TOKENS
-            var ExpTokens = "";
+            var ExpTokens = "((K.V+.N+.V*.=.V*).(H|Q|A|V)+).#";
+            //EXpresión Actions
             var ExpActions = "";
+            //EXpresión Errors
             var ExpErrors = "";
             //Listas
             var StringList = new List<string>();
@@ -50,6 +54,7 @@ namespace Proyecto_1229918_Montenegro
             }
             AuxClass nuevo = new AuxClass();
             nuevo.LecturaArchivo(File,StringList,ref ListaSets,ref ListaTokens, ref ListaActions, ref ListaErrors);
+            var error = false;
             if (ListaSets.Count() != 0)
             {
                 //crear Arbol de expresion
@@ -60,10 +65,16 @@ namespace Proyecto_1229918_Montenegro
                     var TreeSETS = new Tree();
                     var encontrar = false;
                     TreeSETS.Raiz = nuevo.CreateTree(ExpSets);
-                    TreeSETS.RecorrerSets(TreeSETS.Raiz, TreeSETS.Raiz,TreeSETS.Raiz,encontrar,ref ListNode.frase, ref Continuar, Q,V,U,z,E,x,y,w,P);
+                    TreeSETS.RecorrerSets(TreeSETS.Raiz, TreeSETS.Raiz,TreeSETS.Raiz,encontrar,ref ListNode.frase, ref Continuar, Q,V,U,z,E,x,y,w,P,N);
                     if (Continuar == "NPC")
                     {
+                        Console.WriteLine("La linea " + ListNode.Nlinea + " del texto contiene un error");
+                        error = true;
                         break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("La linea " + ListNode.Nlinea + " del texto no contiene error");
                     }
                 }
             }
@@ -72,55 +83,81 @@ namespace Proyecto_1229918_Montenegro
                 Console.WriteLine("Su texto, la linea 1, no posee bien escrito la palabra SETS o no la posee");
                 Console.ReadLine();
             }
-            if (ListaTokens.Count()!=0)
+            if (error)
             {
-                ListaTokens.Remove(ListaTokens[0]);
-                foreach (ListNode ListNode in ListaTokens)
-                {
-                    //var TreeTokens = nuevo.CreaciónArbol(ExpTokens);
-                    var contador = 0;
-                    var Auxchain = string.Empty;
-                    var NoEncontrado = string.Empty;
-                    foreach (char caracter in ListNode.frase)
-                    {
-                        if(caracter==' '&& contador ==0)
-                        {
-                            var chains = string.Empty;
-                            NoEncontrado = string.Empty;
-                            //TreeTokens.RecorrerTokens(TreeTokens.Raiz, chains, ref NoEncontrado, caracter, T7, Auxchain,T2);
-                            if(NoEncontrado== "CadenaError")
-                            {
-                                Console.WriteLine("Su Linea: "+ListNode.Nlinea+" Posee un error");
-                                Console.ReadLine();
-                                break;
-                            }
-                            NoEncontrado = string.Empty;
-                            Auxchain = string.Empty;
-                           // TreeTokens.RecorrerTokens(TreeTokens.Raiz, chains, ref NoEncontrado, caracter, T7, Auxchain,T2);
-                            contador++;
-                        }
-                        else
-                        {
-                            if(contador>0)
-                            {
-                                var chains = string.Empty;
-                                NoEncontrado = string.Empty;
-                             //   TreeTokens.RecorrerTokens(TreeTokens.Raiz, chains, ref NoEncontrado, caracter, T7, Auxchain,T2);
-                            }
-                        }
-                        Auxchain += caracter;
-                    }
-                    if (NoEncontrado == "CadenaError")
-                    {
-                        break;
-                    }
-                }
+                Console.ReadLine();
             }
             else
             {
-                Console.WriteLine("La palabra Tokens no está escrita correctamente");
-                Console.ReadLine();
+                if (ListaTokens.Count() != 0)
+                {
+                    if (ListaActions.Count() != 0)
+                    {
+                        if (ListaTokens[0].Nlinea < ListaActions[0].Nlinea)
+                        {
+                            ListaTokens.Remove(ListaTokens[0]);
+                            foreach (ListNode ListNode in ListaTokens)
+                            {
+                                var TreeTokens = nuevo.CreateTree(ExpTokens);
+                                var contador = 0;
+                                var Auxchain = string.Empty;
+                                var NoEncontrado = string.Empty;
+                                if (NoEncontrado == "CadenaError")
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("El orden en el que está escrito su archivo está incorrecto");
+                            Console.ReadLine();
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("La palabra Actions no está escrita correctamente, o no con");
+                        Console.ReadLine();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("La palabra Tokens no está escrita correctamente");
+                    Console.ReadLine();
+                }
             }
         }
     }
 }
+
+
+
+//foreach (char caracter in ListNode.frase)
+//{
+//    if (caracter == ' ' && contador == 0)
+//    {
+//        var chains = string.Empty;
+//        NoEncontrado = string.Empty;
+//        //TreeTokens.RecorrerTokens(TreeTokens.Raiz, chains, ref NoEncontrado, caracter, T7, Auxchain,T2);
+//        if (NoEncontrado == "CadenaError")
+//        {
+//            Console.WriteLine("Su Linea: " + ListNode.Nlinea + " Posee un error");
+//            Console.ReadLine();
+//            break;
+//        }
+//        NoEncontrado = string.Empty;
+//        Auxchain = string.Empty;
+//        // TreeTokens.RecorrerTokens(TreeTokens.Raiz, chains, ref NoEncontrado, caracter, T7, Auxchain,T2);
+//        contador++;
+//    }
+//    else
+//    {
+//        if (contador > 0)
+//        {
+//            var chains = string.Empty;
+//            NoEncontrado = string.Empty;
+//            //   TreeTokens.RecorrerTokens(TreeTokens.Raiz, chains, ref NoEncontrado, caracter, T7, Auxchain,T2);
+//        }
+//    }
+//    Auxchain += caracter;
+//}
