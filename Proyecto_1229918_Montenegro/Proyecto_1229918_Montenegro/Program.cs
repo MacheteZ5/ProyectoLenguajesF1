@@ -31,6 +31,7 @@ namespace Proyecto_1229918_Montenegro
             var K = "TOKEN";
             //Terminologías ACTIONS
             //Terminologías ERROR
+
             //Expresiones A utilizar
             //Expresión SETS
             var ExpSets = "((Q+.V*.=.V*).((z|w|x|y).P?)+).#";
@@ -98,11 +99,12 @@ namespace Proyecto_1229918_Montenegro
                             ListaTokens.Remove(ListaTokens[0]);
                             foreach (ListNode ListNode in ListaTokens)
                             {
-                                var TreeTokens = nuevo.CreateTree(ExpTokens);
-                                var contador = 0;
-                                var Auxchain = string.Empty;
-                                var NoEncontrado = string.Empty;
-                                if (NoEncontrado == "CadenaError")
+                                var TreeTokens = new Tree();
+                                TreeTokens.Raiz = nuevo.CreateTree(ExpTokens);
+                                var encontrar = false;
+                                var Continuar = string.Empty;
+                                TreeTokens.RecorrerTokens(TreeTokens.Raiz, TreeTokens.Raiz, encontrar, ref ListNode.frase, ref Continuar,K,V,N);
+                                if (Continuar == "NPC")
                                 {
                                     break;
                                 }
@@ -129,35 +131,3 @@ namespace Proyecto_1229918_Montenegro
         }
     }
 }
-
-
-
-//foreach (char caracter in ListNode.frase)
-//{
-//    if (caracter == ' ' && contador == 0)
-//    {
-//        var chains = string.Empty;
-//        NoEncontrado = string.Empty;
-//        //TreeTokens.RecorrerTokens(TreeTokens.Raiz, chains, ref NoEncontrado, caracter, T7, Auxchain,T2);
-//        if (NoEncontrado == "CadenaError")
-//        {
-//            Console.WriteLine("Su Linea: " + ListNode.Nlinea + " Posee un error");
-//            Console.ReadLine();
-//            break;
-//        }
-//        NoEncontrado = string.Empty;
-//        Auxchain = string.Empty;
-//        // TreeTokens.RecorrerTokens(TreeTokens.Raiz, chains, ref NoEncontrado, caracter, T7, Auxchain,T2);
-//        contador++;
-//    }
-//    else
-//    {
-//        if (contador > 0)
-//        {
-//            var chains = string.Empty;
-//            NoEncontrado = string.Empty;
-//            //   TreeTokens.RecorrerTokens(TreeTokens.Raiz, chains, ref NoEncontrado, caracter, T7, Auxchain,T2);
-//        }
-//    }
-//    Auxchain += caracter;
-//}
