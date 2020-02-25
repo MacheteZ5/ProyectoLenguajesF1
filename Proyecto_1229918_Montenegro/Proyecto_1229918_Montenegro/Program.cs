@@ -18,7 +18,7 @@ namespace Proyecto_1229918_Montenegro
             var V = ' ';
             var U = "'";
             var N = "0123456789";
-            var E = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789_+-*/{}[]><.()&%$,;";
+            var E = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789_+-*/{}[]><.()&%$,\n\";=:";
             var z = "'E'..'E'";
             var w = "'E'";
             var y = "CHR(NN)";
@@ -29,16 +29,19 @@ namespace Proyecto_1229918_Montenegro
             var C = E + X;
             var H = "'C'";
             var K = "TOKEN";
+            var G = " ";
+            var A = "+*/()[]{}|?";
             //Terminologías ACTIONS
+            var B = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
             //Terminologías ERROR
 
             //Expresiones A utilizar
             //Expresión SETS
             var ExpSets = "((Q+.V*.=.V*).((z|w|x|y).P?)+).#";
             //EXpresión TOKENS
-            var ExpTokens = "((K.V+.N+.V*.=.V*).(H|Q|A|V)+).#";
+            var ExpTokens = "((K.V+.N+.V*.=.V*).(H|Q|A|G)+).#";
             //EXpresión Actions
-            var ExpActions = "";
+            var ExpActions = "((N+.V*.=.V*).('.B+.')).#";
             //EXpresión Errors
             var ExpErrors = "";
             //Listas
@@ -103,31 +106,89 @@ namespace Proyecto_1229918_Montenegro
                                 TreeTokens.Raiz = nuevo.CreateTree(ExpTokens);
                                 var encontrar = false;
                                 var Continuar = string.Empty;
-                                TreeTokens.RecorrerTokens(TreeTokens.Raiz, TreeTokens.Raiz, encontrar, ref ListNode.frase, ref Continuar,K,V,N);
+                                TreeTokens.RecorrerTokens(TreeTokens.Raiz, TreeTokens.Raiz, encontrar, ref ListNode.frase, ref Continuar,K,V,N,H,Q,A,G,C);
                                 if (Continuar == "NPC")
                                 {
+                                    Console.WriteLine("La linea " + ListNode.Nlinea + " del texto contiene un error");
+                                    error = true;
                                     break;
                                 }
+                                else
+                                {
+                                    Console.WriteLine("La linea " + ListNode.Nlinea + " del texto no contiene error");
+                                }
                             }
+                            if (ListaActions[1].frase == "RESERVADAS()")
+                            {
+                                if(ListaActions[2].frase == "{")
+                                {
+                                    if (ListaActions.Last().frase == "}")
+                                    {
+                                        ListaActions.Remove(ListaActions[0]);
+                                        ListaActions.Remove(ListaActions[0]);
+                                        ListaActions.Remove(ListaActions[0]);
+                                        ListaActions.Remove(ListaActions.Last());
+                                        foreach (ListNode ListNode in ListaActions)
+                                        {
+                                            var TreeActions = new Tree();
+                                            TreeActions.Raiz = nuevo.CreateTree(ExpActions);
+                                            var encontrar = false;
+                                            var Continuar = string.Empty;
+                                            TreeActions.RecorrerActions(TreeActions.Raiz, TreeActions.Raiz, encontrar, ref ListNode.frase, ref Continuar, N,V,B);
+                                            if (Continuar == "NPC")
+                                            {
+                                                Console.WriteLine("La linea " + ListNode.Nlinea + " del texto contiene un error");
+                                                error = true;
+                                                break;
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("La linea " + ListNode.Nlinea + " del texto no contiene error");
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("El archivo no posee la llave final");
+                                        Console.ReadLine();
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("El archivo no posee la llave de inicio");
+                                    Console.ReadLine();
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("El método no posee la frase RESERVADAS() o está mál escrito");
+                                Console.ReadLine();
+                            }
+
                         }
                         else
                         {
                             Console.WriteLine("El orden en el que está escrito su archivo está incorrecto");
                             Console.ReadLine();
                         }
+                        if (error)
+                        {
+                            Console.ReadLine();
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("La palabra Actions no está escrita correctamente, o no con");
+                        Console.WriteLine("La palabra Actions no está escrita correctamente o su archivo no posee el método Actions");
                         Console.ReadLine();
                     }
                 }
                 else
                 {
-                    Console.WriteLine("La palabra Tokens no está escrita correctamente");
+                    Console.WriteLine("La palabra Tokens no está escrita correctamente o su Archivo no posee el método Tokens");
                     Console.ReadLine();
                 }
             }
+            Console.ReadKey();
         }
     }
 }

@@ -266,13 +266,13 @@ namespace Proyecto_1229918_Montenegro
             return encontrado;
         }
         //Métodos para tokens
-        public void RecorrerTokens(Node NodoActual, Node PadreAux, bool encontrar, ref string frase, ref string Continuar,string K,char V,string N)
+        public void RecorrerTokens(Node NodoActual, Node PadreAux, bool encontrar, ref string frase, ref string Continuar,string K,char V,string N,string H, string Q, string A,string G,string C)
         {
             if (NodoActual == null)
             {
                 return;
             }
-            RecorrerTokens(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar,K,V,N);
+            RecorrerTokens(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar,K,V,N,H,Q,A,G,C);
             var R = false;
             EncontrarPadreTokens(NodoActual, Raiz, ref PadreAux, ref R);
             var contador = 0;
@@ -287,7 +287,7 @@ namespace Proyecto_1229918_Montenegro
                             {
                                 if (K != string.Empty)
                                 {
-                                    encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K,V,N);
+                                    encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K,V,N,ref H,Q,A,G,C);
                                 }
                                 else
                                 {
@@ -307,7 +307,7 @@ namespace Proyecto_1229918_Montenegro
                         {
                             if(NodoActual.elemento.caracter == "=")
                             {
-                                encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K,V,N);
+                                encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K,V,N,ref H,Q,A,G,C);
                                 if (encontrar)
                                 {
                                     frase = frase.Substring(1);
@@ -318,22 +318,25 @@ namespace Proyecto_1229918_Montenegro
                         }
                         break;
                     case "+":
-                        do
+                        if (NodoActual.elemento.caracter != "|")
                         {
-                            encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K, V,N);
-                            if (encontrar)
+                            do
                             {
-                                frase = frase.Substring(1);
-                                contador++;
+                                encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K, V, N, ref H, Q, A, G, C);
+                                if (encontrar)
+                                {
+                                    frase = frase.Substring(1);
+                                    contador++;
+                                }
                             }
+                            while (encontrar == true);
+                            Continuar = (contador >= 1) ? "PC" : "NPC";
                         }
-                        while (encontrar == true);
-                        Continuar = (contador >= 1) ? "PC" : "NPC";
                         break;
                     case "*":
                         do
                         {
-                            encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K,V,N);
+                            encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K,V,N,ref H,Q,A,G,C);
                             if (encontrar)
                             {
                                 frase = frase.Substring(1);
@@ -344,55 +347,76 @@ namespace Proyecto_1229918_Montenegro
                         Continuar = (contador >= 0) ? "PC" : "NPC";
                         break;
                     case "|":
-                        //aquí va 
-                        if (Continuar != "PCSP" && NodoActual.elemento.caracter != "|")
+                        if (NodoActual.elemento.caracter != "|")
                         {
                             var Aux = string.Empty;
-                            //do
-                            //{
-                            //    if (z.Length != 0 && w.Length != 0 && x.Length != 0 && y.Length != 0)
-                            //    {
-                            //        encontrar = EncontrarCaracterAux(NodoActual.elemento.caracter, frase[0], Q, V, ref z, E, ref w, ref y, ref x, P, N);
-                            //    }
-                            //    else
-                            //    {
-                            //        if (frase == string.Empty)
-                            //        {
-                            //            break;
-                            //        }
-                            //        else
-                            //        {
-                            //            if (frase[0] != '+')
-                            //            {
-                            //                encontrar = false;
-                            //                break;
-                            //            }
-                            //        }
-                            //    }
-                            //    if (encontrar)
-                            //    {
-                            //        Aux += frase[0];
-                            //        frase = frase.Substring(1);
-                            //    }
-                            //    if (frase.Length == 0)
-                            //    {
-                            //        break;
-                            //    }
-                            //}
-                            //while (encontrar == true && frase[0] != '+');
-                            //Continuar = ((z.Length == 0 || w.Length == 0 || x.Length == 0 || y.Length == 0)) ? "PCSP" : "NPC";
-                            //if (Continuar == "NPC" && NodoActual.elemento.caracter != "y")
-                            //{
-                            //    frase = Aux + frase;
-                            //    Continuar = "PC";
-                            //}
+                            if (NodoActual.elemento.caracter == "H")
+                            {
+                                do
+                                {
+                                    if (H.Length != 0)
+                                    {
+                                        encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K, V, N, ref H, Q, A, G, C);
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                    if (encontrar)
+                                    {
+                                        Aux += frase[0];
+                                        frase = frase.Substring(1);
+                                        contador++;
+                                    }
+                                    if (frase.Length == 0)
+                                    {
+                                        break;
+                                    }
+                                }
+                                while (encontrar == true && H.Length != 0);
+                                Continuar = ((H.Length == 0)) ? "PCSP" : "NPC";
+                            }
+                            else
+                            {
+                                if (Continuar != "PCSP")
+                                {
+                                    do
+                                    {
+                                        encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K, V, N, ref H, Q, A, G, C);
+                                        if (encontrar)
+                                        {
+                                            Aux += frase[0];
+                                            frase = frase.Substring(1);
+                                            contador++;
+                                        }
+                                        if (frase.Length == 0)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    while (encontrar == true);
+                                    Continuar = ((contador >= 1)) ? "PCSP" : "NPC";
+                                }
+                            }
+                            if (Continuar == "NPC" && NodoActual.elemento.caracter != "G")
+                            {
+                                frase = Aux + frase;
+                                Continuar = "PC";
+                            }
                         }
                         break;
                 }
             }
             if (Continuar=="PC"||Continuar=="PCSP")
             {
-                RecorrerTokens(NodoActual.hijoDR, PadreAux, encontrar, ref frase, ref Continuar,K,V,N);
+                RecorrerTokens(NodoActual.hijoDR, PadreAux, encontrar, ref frase, ref Continuar,K,V,N,H,Q,A,G,C);
+                if (NodoActual.elemento.caracter == "+" && frase.Length != 0 && NodoActual.hijoIZ.elemento.caracter == "|")
+                {
+                    while (frase.Length != 0 && (Continuar == "PC" || Continuar == "PCSP"))
+                    {
+                        RecorrerTokens(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar, K, V, N, H, Q, A, G, C);
+                    }
+                }
             }
             else
             {
@@ -405,7 +429,7 @@ namespace Proyecto_1229918_Montenegro
             {
                 return;
             }
-            EncontrarPadre(NodoActual, Padre.hijoIZ, ref PadreAux, ref P);
+            EncontrarPadreTokens(NodoActual, Padre.hijoIZ, ref PadreAux, ref P);
             if (Padre.hijoIZ == NodoActual || Padre.hijoDR == NodoActual)
             {
                 PadreAux = Padre;
@@ -413,14 +437,14 @@ namespace Proyecto_1229918_Montenegro
             }
             if (!P)
             {
-                EncontrarPadre(NodoActual, Padre.hijoDR, ref PadreAux, ref P);
+                EncontrarPadreTokens(NodoActual, Padre.hijoDR, ref PadreAux, ref P);
             }
             else
             {
                 return;
             }
         }
-        private bool EncontrarCaracterAuxTokens(string cadena, char caracter, string K,char V,string N)
+        private bool EncontrarCaracterAuxTokens(string cadena, char caracter, string K,char V,string N,ref string H, string Q, string A,string G,string C)
         {
             var encontrado = false;
             switch (cadena)
@@ -436,6 +460,145 @@ namespace Proyecto_1229918_Montenegro
                     break;
                 case "=":
                     encontrado = ('=' == caracter) ? true : false;
+                    break;
+                case "H":
+                    encontrado = H.Contains(caracter) ? true : false;
+                    if (encontrado)
+                    {
+                        H = H.Substring(1);
+                    }
+                    else
+                    {
+                        if (H[0] == 'C')
+                        {
+                            encontrado = C.Contains(caracter) ? true : false;
+                            H = H.Substring(1);
+                        }
+                    }
+                    break;
+                case "Q":
+                    encontrado = Q.Contains(caracter) ? true : false;
+                    break;
+                case "A":
+                    encontrado = A.Contains(caracter) ? true : false;
+                    break;
+                case "G":
+                    encontrado = G.Contains(caracter) ? true : false;
+                    break;
+            }
+            return encontrado;
+        }
+        //Métodos para Actions
+        public void RecorrerActions(Node NodoActual, Node PadreAux, bool encontrar, ref string frase, ref string Continuar,string N,char V,string B)
+        {
+            if (NodoActual == null)
+            {
+                return;
+            }
+            RecorrerActions(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar,N,V,B);
+            var R = false;
+            EncontrarPadreActions(NodoActual, Raiz, ref PadreAux, ref R);
+            var contador = 0;
+            if (frase.Length != 0)
+            {
+                switch (PadreAux.elemento.caracter)
+                {
+                    case ".":
+                        if (NodoActual.elemento.caracter == "="|| NodoActual.elemento.caracter == "'")
+                        {
+                            encontrar = EncontrarCaracterAuxActions(NodoActual.elemento.caracter, frase[0],N,V,B);
+                            if (encontrar)
+                            {
+                                frase = frase.Substring(1);
+                                contador++;
+                            }
+                            Continuar = (contador == 1) ? "PC" : "NPC";
+                        }
+                        break;
+                    case "+":
+                            do
+                            {
+                                encontrar = EncontrarCaracterAuxActions(NodoActual.elemento.caracter, frase[0],N,V,B);
+                                if (encontrar)
+                                {
+                                    frase = frase.Substring(1);
+                                    contador++;
+                                }
+                            }
+                            while (encontrar == true);
+                            Continuar = (contador >= 1) ? "PC" : "NPC";
+                        break;
+                    case "*":
+                        do
+                        {
+                            encontrar = EncontrarCaracterAuxActions(NodoActual.elemento.caracter, frase[0],N,V,B);
+                            if (encontrar)
+                            {
+                                frase = frase.Substring(1);
+                                contador++;
+                            }
+                        }
+                        while (encontrar == true);
+                        Continuar = (contador >= 0) ? "PC" : "NPC";
+                        break;
+                }
+            }
+            if (Continuar == "PC" || Continuar == "PCSP")
+            {
+                RecorrerActions(NodoActual.hijoDR, PadreAux, encontrar, ref frase, ref Continuar,N,V,B);
+                if (NodoActual.elemento.caracter == "+" && frase.Length != 0 && NodoActual.hijoIZ.elemento.caracter == "|")
+                {
+                    while (frase.Length != 0 && (Continuar == "PC" || Continuar == "PCSP"))
+                    {
+                        RecorrerActions(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar,N,V,B);
+                    }
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
+        private void EncontrarPadreActions(Node NodoActual, Node Padre, ref Node PadreAux, ref bool P)
+        {
+            if (Padre == null)
+            {
+                return;
+            }
+            EncontrarPadreActions(NodoActual, Padre.hijoIZ, ref PadreAux, ref P);
+            if (Padre.hijoIZ == NodoActual || Padre.hijoDR == NodoActual)
+            {
+                PadreAux = Padre;
+                P = true;
+            }
+            if (!P)
+            {
+                EncontrarPadreActions(NodoActual, Padre.hijoDR, ref PadreAux, ref P);
+            }
+            else
+            {
+                return;
+            }
+        }
+        private bool EncontrarCaracterAuxActions(string cadena, char caracter,string N,char V,string B)
+        {
+            var encontrado = false;
+            switch (cadena)
+            {
+                case "N":
+                    encontrado = (N.Contains(caracter)) ? true : false;
+                    break;
+                case "V":
+                    encontrado = (V.Equals(caracter)) ? true : false;
+                    break;
+                case "=":
+                    encontrado = ('=' == caracter) ? true : false;
+                    break;
+                case "'":
+                    encontrado = ("'".Contains(caracter)) ? true : false;
+                    break;
+                case "B":
+                    encontrado = (B.Contains(caracter)) ? true : false;
                     break;
             }
             return encontrado;
