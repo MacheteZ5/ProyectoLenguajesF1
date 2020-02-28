@@ -128,37 +128,59 @@ namespace Proyecto_1229918_Montenegro
         }
         public Node CreateTree(string ExpSets)
         {
-            var T = "(.|";
-            var S = "+?*";
+            var T = "(.|+?*)";
             var PT = new Stack<char>();
             var PS = new Stack<Node>();
             foreach (char caracter in ExpSets)
             {
-                if (T.Contains(caracter))
+                if (!T.Contains(caracter))
                 {
-                    PT.Push(caracter);
+                    string carct = string.Empty;
+                    carct += caracter;
+                    var TreeSETSNode = CreateNode(carct);
+                    PS.Push(TreeSETSNode);
                 }
                 else
                 {
-                    if (caracter == ')')
+                    if (caracter == '(')
                     {
-                        PopPilaT(ref PS, ref PT);
+                        PT.Push(caracter);
                     }
                     else
                     {
-                        if (S.Contains(caracter))
+                        if (caracter == ')')
                         {
-                            var carct = string.Empty;
-                            carct += caracter;
-                            var TreeSETSNode = CreateNode(carct);
-                            PS = JuntarNodos(TreeSETSNode, PS);
+                            PopPilaT(ref PS, ref PT);
                         }
                         else
                         {
-                            string carct = string.Empty;
-                            carct += caracter;
-                            var TreeSETSNode = CreateNode(carct);
-                            PS.Push(TreeSETSNode);
+                            if (caracter == '*' || caracter == '+'|| caracter == '?')
+                            {
+                                var carct = string.Empty;
+                                carct += caracter;
+                                var TreeSETSNode = CreateNode(carct);
+                                PS = JuntarNodos(TreeSETSNode, PS);
+                            }
+                            else
+                            {
+                                if (PT.Count()>0)
+                                {
+                                    if ((PT.First() == '.' && caracter == '.') || (PT.First() == '|' && caracter == '|'))
+                                    {
+                                        var carct = ' ';
+                                        carct = caracter;
+                                        PoPPilaT(ref PS, ref PT, carct);
+                                    }
+                                    else
+                                    {
+                                        PT.Push(caracter);
+                                    }
+                                }
+                                else
+                                {
+                                    PT.Push(caracter);
+                                }
+                            }
                         }
                     }
                 }
@@ -168,6 +190,18 @@ namespace Proyecto_1229918_Montenegro
                 PopPilaT(ref PS, ref PT);
             }
             return PS.Pop();
+        }
+        void PoPPilaT(ref Stack<Node> PS, ref Stack<char> PT, char Aux)
+        {
+            string Auxiliar = string.Empty;
+            Auxiliar += PT.Pop();
+            var TreeSETSNode = CreateNode(Auxiliar);
+            Node HD = PS.Pop();
+            Node HI = PS.Pop();
+            TreeSETSNode.hijoDR = HD;
+            TreeSETSNode.hijoIZ = HI;
+            PS.Push(TreeSETSNode);
+            PT.Push(Aux);
         }
     }
 }

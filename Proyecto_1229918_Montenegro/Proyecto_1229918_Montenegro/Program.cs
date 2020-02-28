@@ -14,34 +14,39 @@ namespace Proyecto_1229918_Montenegro
         {
             //terminologías que se van a utilizar
             //Terminologias SETS
-            var Q = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
-            var V = ' ';
-            var U = "'";
-            var N = "0123456789";
+            var A = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+            var B = ' ';
+            var C = "'E'..'E'";
+            var D = "'E'";
             var E = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789_+-*/{}[]><.()&%$,\n\";=:";
-            var z = "'E'..'E'";
-            var w = "'E'";
-            var y = "CHR(NN)";
-            var x = "CHR(NN)..CHR(NNN)";
+            var F = "CHR(N)";
+            var G = "CHR(NN)";
+            var H = "CHR(NNN)";
+            var J = "CHR(N)..CHR(N)";
+            var L = "CHR(N)..CHR(NN)";
+            var M = "CHR(N)..CHR(NNN)";
+            var N = "0123456789";
+            var Ñ = "CHR(NN)..CHR(N)";
+            var O = "CHR(NN)..CHR(NN)";
+            var Q = "CHR(NN)..CHR(NNN)";
+            var R = "CHR(NNN)..CHR(N)";
+            var S = "CHR(NNN)..CHR(NN)";
+            var T = "CHR(NNN)..CHR(NNN)";
             var P = "+";
             //Terminologías Tokens
             var X = '"';
-            var C = E + X;
-            var H = "'C'";
+            var I = E + X;
+            var U = "'I'";
             var K = "TOKEN";
-            var G = " ";
-            var A = "+*/()[]{}|?";
-            //Terminologías ACTIONS
-            var B = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
-            //Terminologías ERROR
-
+            var V = " ";
+            var W = "+*/()[]{}|?";
             //Expresiones A utilizar
             //Expresión SETS
-            var ExpSets = "((Q+.V*.=.V*).((z|w|x|y).P?)+).#";
+            var ExpSets = "((A+.B*.=.B*).((C|D|J|L|M|Ñ|O|Q|R|S|T|H|F|G).P?)+).#";
             //EXpresión TOKENS
-            var ExpTokens = "((K.V+.N+.V*.=.V*).(H|Q|A|G)+).#";
+            var ExpTokens = "((K.B+.N+.B*.=.B*).(U|A|B|W)+).#";
             //EXpresión Actions
-            var ExpActions = "((N+.V*.=.V*).('.B+.')).#";
+            var ExpActions = "(N+.B*.=.B*.'.A+.').#";
             //EXpresión Errors
             var ExpErrors = "";
             //Listas
@@ -54,23 +59,25 @@ namespace Proyecto_1229918_Montenegro
             var File = Console.ReadLine();
             if (File[0] == '"')
             {
-                File = File.Substring(1,(File.Count()-2));
+                File = File.Substring(1, (File.Count() - 2));
             }
             AuxClass nuevo = new AuxClass();
-            nuevo.LecturaArchivo(File,StringList,ref ListaSets,ref ListaTokens, ref ListaActions, ref ListaErrors);
+            nuevo.LecturaArchivo(File, StringList, ref ListaSets, ref ListaTokens, ref ListaActions, ref ListaErrors);
             var error = false;
+            var cantidad = 0;
             if (ListaSets.Count() != 0)
             {
-                //crear Arbol de expresion
+                // crear Arbol de expresion
                 ListaSets.Remove(ListaSets[0]);
                 foreach (ListNode ListNode in ListaSets)
                 {
+                    cantidad = 0;
                     var Continuar = string.Empty;
                     var TreeSETS = new Tree();
                     var encontrar = false;
                     TreeSETS.Raiz = nuevo.CreateTree(ExpSets);
-                    TreeSETS.RecorrerSets(TreeSETS.Raiz, TreeSETS.Raiz,TreeSETS.Raiz,encontrar,ref ListNode.frase, ref Continuar, Q,V,U,z,E,x,y,w,P,N);
-                    if (Continuar == "NPC")
+                    TreeSETS.RecorrerSets(TreeSETS.Raiz, TreeSETS.Raiz, TreeSETS.Raiz, encontrar, ref ListNode.frase, ref Continuar, A, B, C, D, E, F, G, H, J, L, M, N, Ñ, O, Q, R, S, T, P, ref cantidad);
+                    if (Continuar == "NPC" || cantidad == 0)
                     {
                         Console.WriteLine("La linea " + ListNode.Nlinea + " del texto contiene un error");
                         error = true;
@@ -102,12 +109,13 @@ namespace Proyecto_1229918_Montenegro
                             ListaTokens.Remove(ListaTokens[0]);
                             foreach (ListNode ListNode in ListaTokens)
                             {
+                                cantidad = 0;
                                 var TreeTokens = new Tree();
                                 TreeTokens.Raiz = nuevo.CreateTree(ExpTokens);
                                 var encontrar = false;
                                 var Continuar = string.Empty;
-                                TreeTokens.RecorrerTokens(TreeTokens.Raiz, TreeTokens.Raiz, encontrar, ref ListNode.frase, ref Continuar,K,V,N,H,Q,A,G,C);
-                                if (Continuar == "NPC")
+                                TreeTokens.RecorrerTokens(TreeTokens.Raiz, TreeTokens.Raiz, encontrar, ref ListNode.frase, ref Continuar, K, B, N, U, A, W, I,V, ref cantidad);
+                                if (Continuar == "NPC" || cantidad == 0)
                                 {
                                     Console.WriteLine("La linea " + ListNode.Nlinea + " del texto contiene un error");
                                     error = true;
@@ -118,61 +126,71 @@ namespace Proyecto_1229918_Montenegro
                                     Console.WriteLine("La linea " + ListNode.Nlinea + " del texto no contiene error");
                                 }
                             }
-                            if (ListaActions[1].frase == "RESERVADAS()")
+                            if (error)
                             {
-                                if(ListaActions[2].frase == "{")
+                                Console.ReadLine();
+                            }
+                            else
+                            {
+                                if (ListaActions[1].frase == "RESERVADAS()")
                                 {
-                                    if (ListaActions.Last().frase == "}")
+                                    if (ListaActions[2].frase == "{")
                                     {
-                                        ListaActions.Remove(ListaActions[0]);
-                                        ListaActions.Remove(ListaActions[0]);
-                                        ListaActions.Remove(ListaActions[0]);
-                                        ListaActions.Remove(ListaActions.Last());
-                                        foreach (ListNode ListNode in ListaActions)
+                                        if (ListaActions.Last().frase == "}")
                                         {
-                                            var TreeActions = new Tree();
-                                            TreeActions.Raiz = nuevo.CreateTree(ExpActions);
-                                            var encontrar = false;
-                                            var Continuar = string.Empty;
-                                            TreeActions.RecorrerActions(TreeActions.Raiz, TreeActions.Raiz, encontrar, ref ListNode.frase, ref Continuar, N,V,B);
-                                            if (Continuar == "NPC")
+                                            ListaActions.Remove(ListaActions[0]);
+                                            ListaActions.Remove(ListaActions[0]);
+                                            ListaActions.Remove(ListaActions[0]);
+                                            ListaActions.Remove(ListaActions.Last());
+                                            foreach (ListNode ListNode in ListaActions)
                                             {
-                                                Console.WriteLine("La linea " + ListNode.Nlinea + " del texto contiene un error");
-                                                error = true;
-                                                break;
+                                                var TreeActions = new Tree();
+                                                TreeActions.Raiz = nuevo.CreateTree(ExpActions);
+                                                var encontrar = false;
+                                                var Continuar = string.Empty;
+                                                TreeActions.RecorrerActions(TreeActions.Raiz, TreeActions.Raiz, encontrar, ref ListNode.frase, ref Continuar, N, B,A);
+                                                if (Continuar == "NPC")
+                                                {
+                                                    Console.WriteLine("La linea " + ListNode.Nlinea + " del texto contiene un error");
+                                                    error = true;
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("La linea " + ListNode.Nlinea + " del texto no contiene error");
+                                                }
+                                            }
+                                            if (error)
+                                            {
+                                                Console.ReadLine();
                                             }
                                             else
                                             {
-                                                Console.WriteLine("La linea " + ListNode.Nlinea + " del texto no contiene error");
+                                                //Aquí va ERROR
                                             }
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("El archivo no posee la llave final");
+                                            Console.ReadLine();
                                         }
                                     }
                                     else
                                     {
-                                        Console.WriteLine("El archivo no posee la llave final");
+                                        Console.WriteLine("El archivo no posee la llave de inicio");
                                         Console.ReadLine();
                                     }
                                 }
                                 else
                                 {
-                                    Console.WriteLine("El archivo no posee la llave de inicio");
+                                    Console.WriteLine("El método no posee la frase RESERVADAS() o está mál escrito");
                                     Console.ReadLine();
                                 }
                             }
-                            else
-                            {
-                                Console.WriteLine("El método no posee la frase RESERVADAS() o está mál escrito");
-                                Console.ReadLine();
-                            }
-
                         }
                         else
                         {
                             Console.WriteLine("El orden en el que está escrito su archivo está incorrecto");
-                            Console.ReadLine();
-                        }
-                        if (error)
-                        {
                             Console.ReadLine();
                         }
                     }
@@ -188,7 +206,9 @@ namespace Proyecto_1229918_Montenegro
                     Console.ReadLine();
                 }
             }
-            Console.ReadKey();
         }
     }
+
 }
+    
+

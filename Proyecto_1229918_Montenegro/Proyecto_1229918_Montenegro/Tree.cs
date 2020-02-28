@@ -26,16 +26,16 @@ namespace Proyecto_1229918_Montenegro
     {
         public Node Raiz;
         //Método para Sets
-        public void RecorrerSets(Node NodoActual,Node raiz,Node PadreAux, bool encontrar,  ref string frase, ref string Continuar, string Q,char V,string U,string z,string E,string x, string y, string w,string P, string N)
+        public void RecorrerSets(Node NodoActual,Node raiz,Node PadreAux, bool encontrar,  ref string frase, ref string Continuar, string A,char B,string C,string D,string E,string F, string G, string H,string J, string L, string M, string N, string Ñ, string O, string Q, string R, string S, string T, string P, ref int cantidad)
         {
             if(NodoActual == null)
             {
                 return;
             }
-            RecorrerSets(NodoActual.hijoIZ,raiz, PadreAux,encontrar, ref frase, ref Continuar,Q,V,U,z,E,x,y,w,P,N);
+            RecorrerSets(NodoActual.hijoIZ,raiz, PadreAux,encontrar, ref frase, ref Continuar,A,B,C,D,E,F,G,H,J,L,M,N,Ñ,O,Q,R,S,T,P,ref cantidad);
             //Encontrar Padre
-            var R = false;
-            EncontrarPadre(NodoActual, raiz,ref PadreAux, ref R);
+            var X = false;
+            EncontrarPadre(NodoActual, raiz,ref PadreAux, ref X);
             var contador = 0;
             if (frase.Length != 0)
             {
@@ -52,7 +52,7 @@ namespace Proyecto_1229918_Montenegro
                             {
                                 do
                                 {
-                                    encontrar = EncontrarCaracterAux(NodoActual.elemento.caracter, frase[0], Q, V, ref z, E,ref w,ref y,ref x,P,N);
+                                    encontrar = EncontrarCaracterAux(NodoActual.elemento.caracter, frase[0], A, B, ref C, ref D, E, ref F,ref G, ref H, ref J,ref L,ref M,N,ref Ñ,ref O,ref Q, ref R,ref S, ref T, P);
                                     if (encontrar == true)
                                     {
                                         frase = frase.Substring(1);
@@ -67,7 +67,7 @@ namespace Proyecto_1229918_Montenegro
                     case "*":
                         do
                         {
-                            encontrar = EncontrarCaracterAux(NodoActual.elemento.caracter, frase[0], Q, V,ref z,E,ref w,ref y,ref x,P,N);
+                            encontrar = EncontrarCaracterAux(NodoActual.elemento.caracter, frase[0], A, B, ref C, ref D, E, ref F, ref G, ref H, ref J, ref L, ref M, N, ref Ñ, ref O, ref Q, ref R, ref S, ref T, P);
                             if (encontrar)
                             {
                                 frase = frase.Substring(1);
@@ -80,7 +80,7 @@ namespace Proyecto_1229918_Montenegro
                     case ".":
                         if (NodoActual.elemento.caracter == "=")
                         {
-                            encontrar = EncontrarCaracterAux(NodoActual.elemento.caracter, frase[0], Q, V,ref z,E,ref w,ref y,ref x,P,N);
+                            encontrar = EncontrarCaracterAux(NodoActual.elemento.caracter, frase[0], A, B, ref C, ref D, E, ref F, ref G, ref H, ref J, ref L, ref M, N, ref Ñ, ref O, ref Q, ref R, ref S, ref T, P);
                             if (encontrar)
                             {
                                 frase = frase.Substring(1);
@@ -90,24 +90,24 @@ namespace Proyecto_1229918_Montenegro
                         }
                         break;
                     case "|":
-                        if (Continuar!= "PCSP"&&NodoActual.elemento.caracter!="|")
+                        if (Continuar != "PCSP" && NodoActual.elemento.caracter != "|")
                         {
                             var Aux = string.Empty;
                             do
                             {
-                                if (z.Length != 0 && w.Length != 0 && x.Length != 0 && y.Length != 0)
+                                if (C.Length != 0 && D.Length != 0 && F.Length != 0 && G.Length != 0 && H.Length != 0 && J.Length != 0 && L.Length != 0 && M.Length != 0 && Ñ.Length != 0 && O.Length != 0 && Q.Length != 0 && R.Length != 0 && R.Length != 0 && S.Length != 0 && T.Length != 0)
                                 {
-                                    encontrar = EncontrarCaracterAux(NodoActual.elemento.caracter, frase[0], Q, V, ref z, E, ref w, ref y, ref x, P, N);
+                                    encontrar = EncontrarCaracterAux(NodoActual.elemento.caracter, frase[0], A, B, ref C, ref D, E, ref F, ref G, ref H, ref J, ref L, ref M, N, ref Ñ, ref O, ref Q, ref R, ref S, ref T, P);
                                 }
                                 else
                                 {
-                                    if (frase==string.Empty)
+                                    if (frase == string.Empty)
                                     {
                                         break;
                                     }
                                     else
                                     {
-                                        if (frase[0]!='+')
+                                        if (frase[0] != '+')
                                         {
                                             encontrar = false;
                                             break;
@@ -119,14 +119,15 @@ namespace Proyecto_1229918_Montenegro
                                     Aux += frase[0];
                                     frase = frase.Substring(1);
                                 }
-                                if(frase.Length == 0)
+                                if (frase.Length == 0)
                                 {
                                     break;
                                 }
                             }
-                            while (encontrar == true&&frase[0]!='+');
-                            Continuar = ((z.Length == 0||w.Length==0|| x.Length == 0 || y.Length == 0)) ? "PCSP" : "NPC";
-                            if (Continuar == "NPC"&&NodoActual.elemento.caracter!="y")
+                            while (encontrar == true && frase[0] != '+');
+                            Continuar = ((C.Length == 0 || D.Length == 0 || F.Length == 0 || G.Length == 0 || H.Length == 0 || J.Length == 0 || L.Length == 0 || M.Length == 0 || Ñ.Length == 0 || O.Length == 0 || Q.Length == 0 || R.Length == 0 || R.Length == 0 || S.Length == 0 || T.Length == 0)) ? "PCSP" : "NPC";
+                            cantidad = Continuar == "PCSP" ? cantidad+1 : cantidad;
+                            if (Continuar == "NPC"&&NodoActual.elemento.caracter!="G")
                             {
                                 frase = Aux + frase;
                                 Continuar = "PC";
@@ -134,7 +135,7 @@ namespace Proyecto_1229918_Montenegro
                         }
                         break;
                     case "?":
-                        encontrar = EncontrarCaracterAux(NodoActual.elemento.caracter, frase[0], Q, V, ref z, E,ref w,ref y,ref x,P,N);
+                        encontrar = EncontrarCaracterAux(NodoActual.elemento.caracter, frase[0], A, B, ref C, ref D, E, ref F, ref G, ref H, ref J, ref L, ref M, N, ref Ñ, ref O, ref Q, ref R, ref S, ref T, P);
                         if (encontrar)
                         {
                             frase = frase.Substring(1);
@@ -150,12 +151,12 @@ namespace Proyecto_1229918_Montenegro
             }
             if (Continuar == "PC"||Continuar== "PCSP")
             {
-                RecorrerSets(NodoActual.hijoDR,raiz, PadreAux, encontrar, ref frase, ref Continuar, Q,V,U,z,E,x,y,w,P,N);
+                RecorrerSets(NodoActual.hijoDR, raiz, PadreAux, encontrar, ref frase, ref Continuar, A, B, C, D, E, F, G, H, J, L, M, N, Ñ, O, Q, R, S, T, P, ref cantidad);
                 if (NodoActual.elemento.caracter == "+" && frase.Length != 0 && NodoActual.hijoIZ.elemento.caracter==".")
                 {
                     while (frase.Length!=0&&(Continuar =="PC"||Continuar == "PCSP"))
                     {
-                        RecorrerSets(NodoActual.hijoIZ, raiz, PadreAux, encontrar, ref frase, ref Continuar, Q, V, U, z, E, x, y, w, P,N);
+                        RecorrerSets(NodoActual.hijoIZ, raiz, PadreAux, encontrar, ref frase, ref Continuar, A, B, C, D, E, F, G, H, J, L, M, N, Ñ, O, Q, R, S, T, P, ref cantidad);
                     }
                 }
             }
@@ -185,77 +186,228 @@ namespace Proyecto_1229918_Montenegro
                 return;
             }
         }
-        private bool EncontrarCaracterAux(string cadena, char caracter, string Q, char V,ref string z,string E,ref string w,ref string y,ref string x,string P,string N)
+        private bool EncontrarCaracterAux(string cadena, char caracter, string A, char B,ref string C,ref string D,string E,ref string F,ref string G, ref string H, ref string J, ref string L, ref string M, string N,ref string Ñ, ref string O, ref string Q, ref string R, ref string S, ref string T,string P)
         {
             var encontrado = false; 
             switch (cadena)
             {
-                case "Q":
-                    encontrado = Q.Contains(caracter) ? true : false;
+                case "A":
+                    encontrado = A.Contains(caracter) ? true : false;
                     break;
-                case "V":
-                    encontrado = V.Equals(caracter) ? true : false;
+                case "B":
+                    encontrado = B.Equals(caracter) ? true : false;
                     break;
                 case "=":
                     encontrado = ('='==caracter) ? true : false;
                     break;
-                case "z":
-                    encontrado = z[0]==caracter ? true : false;
+                case "C":
+                    encontrado = C[0]==caracter ? true : false;
                     if (encontrado)
                     {
-                        z = z.Substring(1);
+                        C = C.Substring(1);
                     }
                     else
                     {
-                        if (z[0] == 'E')
+                        if (C[0] == 'E')
                         {
                             encontrado = E.Contains(caracter) ? true : false;
-                            z = z.Substring(1);
+                            C = C.Substring(1);
                         }
                     }
                     break;
-                case "w":
-                        encontrado = w[0] == caracter ? true : false;
+                case "D":
+                        encontrado = D[0] == caracter ? true : false;
                         if (encontrado)
                         {
-                            w = w.Substring(1);
+                            D = D.Substring(1);
                         }
                         else
                         {
-                            if (w[0] == 'E')
+                            if (D[0] == 'E')
                             {
                                 encontrado = E.Contains(caracter) ? true : false;
-                                w = w.Substring(1);
+                                D = D.Substring(1);
                             }
                         }
                     break;
-                case "y":
-                    encontrado = y[0] == caracter ? true : false;
+                case "F":
+                    encontrado = F[0] == caracter ? true : false;
                     if (encontrado)
                     {
-                        y = y.Substring(1);
+                        F = F.Substring(1);
                     }
                     else
                     {
-                        if (y[0] == 'N')
+                        if (F[0] == 'N')
                         {
                             encontrado = N.Contains(caracter) ? true : false;
-                            y = y.Substring(1);
+                            F = F.Substring(1);
                         }
                     }
                     break;
-                case "x":
-                    encontrado = x[0] == caracter ? true : false;
+                case "G":
+                    encontrado = G[0] == caracter ? true : false;
                     if (encontrado)
                     {
-                        x = x.Substring(1);
+                        G = G.Substring(1);
                     }
                     else
                     {
-                        if (x[0] == 'N')
+                        if (G[0] == 'N')
                         {
                             encontrado = N.Contains(caracter) ? true : false;
-                            x = x.Substring(1);
+                            G = G.Substring(1);
+                        }
+                    }
+                    break;
+                case "H":
+                    encontrado = H[0] == caracter ? true : false;
+                    if (encontrado)
+                    {
+                        H = H.Substring(1);
+                    }
+                    else
+                    {
+                        if (H[0] == 'N')
+                        {
+                            encontrado = N.Contains(caracter) ? true : false;
+                            H = H.Substring(1);
+                        }
+                    }
+                    break;
+                case "J":
+                    encontrado = J[0] == caracter ? true : false;
+                    if (encontrado)
+                    {
+                        J = J.Substring(1);
+                    }
+                    else
+                    {
+                        if (J[0] == 'N')
+                        {
+                            encontrado = N.Contains(caracter) ? true : false;
+                            J = J.Substring(1);
+                        }
+                    }
+                    break;
+                case "L":
+                    encontrado = L[0] == caracter ? true : false;
+                    if (encontrado)
+                    {
+                        L = L.Substring(1);
+                    }
+                    else
+                    {
+                        if (L[0] == 'N')
+                        {
+                            encontrado = N.Contains(caracter) ? true : false;
+                            L = L.Substring(1);
+                        }
+                    }
+                    break;
+                case "M":
+                    encontrado = M[0] == caracter ? true : false;
+                    if (encontrado)
+                    {
+                        M = M.Substring(1);
+                    }
+                    else
+                    {
+                        if (M[0] == 'N')
+                        {
+                            encontrado = N.Contains(caracter) ? true : false;
+                            M = M.Substring(1);
+                        }
+                    }
+                    break;
+
+                case "Ñ":
+                    encontrado = Ñ[0] == caracter ? true : false;
+                    if (encontrado)
+                    {
+                        Ñ = Ñ.Substring(1);
+                    }
+                    else
+                    {
+                        if (Ñ[0] == 'N')
+                        {
+                            encontrado = N.Contains(caracter) ? true : false;
+                            Ñ = Ñ.Substring(1);
+                        }
+                    }
+                    break;
+                case "O":
+                    encontrado = O[0] == caracter ? true : false;
+                    if (encontrado)
+                    {
+                        O = O.Substring(1);
+                    }
+                    else
+                    {
+                        if (O[0] == 'N')
+                        {
+                            encontrado = N.Contains(caracter) ? true : false;
+                            O = O.Substring(1);
+                        }
+                    }
+                    break;
+                case "Q":
+                    encontrado = Q[0] == caracter ? true : false;
+                    if (encontrado)
+                    {
+                        Q = Q.Substring(1);
+                    }
+                    else
+                    {
+                        if (Q[0] == 'N')
+                        {
+                            encontrado = N.Contains(caracter) ? true : false;
+                            Q = Q.Substring(1);
+                        }
+                    }
+                    break;
+                case "R":
+                    encontrado = R[0] == caracter ? true : false;
+                    if (encontrado)
+                    {
+                        R = R.Substring(1);
+                    }
+                    else
+                    {
+                        if (R[0] == 'N')
+                        {
+                            encontrado = N.Contains(caracter) ? true : false;
+                            R = R.Substring(1);
+                        }
+                    }
+                    break;
+                case "S":
+                    encontrado = S[0] == caracter ? true : false;
+                    if (encontrado)
+                    {
+                        S = S.Substring(1);
+                    }
+                    else
+                    {
+                        if (S[0] == 'N')
+                        {
+                            encontrado = N.Contains(caracter) ? true : false;
+                            S = S.Substring(1);
+                        }
+                    }
+                    break;
+                case "T":
+                    encontrado = T[0] == caracter ? true : false;
+                    if (encontrado)
+                    {
+                        T = T.Substring(1);
+                    }
+                    else
+                    {
+                        if (T[0] == 'N')
+                        {
+                            encontrado = N.Contains(caracter) ? true : false;
+                            T = T.Substring(1);
                         }
                     }
                     break;
@@ -266,13 +418,13 @@ namespace Proyecto_1229918_Montenegro
             return encontrado;
         }
         //Métodos para tokens
-        public void RecorrerTokens(Node NodoActual, Node PadreAux, bool encontrar, ref string frase, ref string Continuar,string K,char V,string N,string H, string Q, string A,string G,string C)
+        public void RecorrerTokens(Node NodoActual, Node PadreAux, bool encontrar, ref string frase, ref string Continuar, string K, char B, string N, string U, string A, string W, string I,string V, ref int cantidad)
         {
             if (NodoActual == null)
             {
                 return;
             }
-            RecorrerTokens(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar,K,V,N,H,Q,A,G,C);
+            RecorrerTokens(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar,K,B,N,U,A,W,I,V,ref cantidad);
             var R = false;
             EncontrarPadreTokens(NodoActual, Raiz, ref PadreAux, ref R);
             var contador = 0;
@@ -287,7 +439,7 @@ namespace Proyecto_1229918_Montenegro
                             {
                                 if (K != string.Empty)
                                 {
-                                    encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K,V,N,ref H,Q,A,G,C);
+                                    encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K,B,N,ref U,A,W,I,V);
                                 }
                                 else
                                 {
@@ -307,7 +459,7 @@ namespace Proyecto_1229918_Montenegro
                         {
                             if(NodoActual.elemento.caracter == "=")
                             {
-                                encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K,V,N,ref H,Q,A,G,C);
+                                encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K, B, N, ref U, A, W, I,V);
                                 if (encontrar)
                                 {
                                     frase = frase.Substring(1);
@@ -322,7 +474,7 @@ namespace Proyecto_1229918_Montenegro
                         {
                             do
                             {
-                                encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K, V, N, ref H, Q, A, G, C);
+                                encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K, B, N, ref U, A, W, I,V);
                                 if (encontrar)
                                 {
                                     frase = frase.Substring(1);
@@ -336,7 +488,7 @@ namespace Proyecto_1229918_Montenegro
                     case "*":
                         do
                         {
-                            encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K,V,N,ref H,Q,A,G,C);
+                            encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K, B, N, ref U, A, W, I,V);
                             if (encontrar)
                             {
                                 frase = frase.Substring(1);
@@ -350,13 +502,13 @@ namespace Proyecto_1229918_Montenegro
                         if (NodoActual.elemento.caracter != "|")
                         {
                             var Aux = string.Empty;
-                            if (NodoActual.elemento.caracter == "H")
+                            if (NodoActual.elemento.caracter == "U")
                             {
                                 do
                                 {
-                                    if (H.Length != 0)
+                                    if (U.Length != 0)
                                     {
-                                        encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K, V, N, ref H, Q, A, G, C);
+                                        encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K, B, N, ref U, A, W, I,V);
                                     }
                                     else
                                     {
@@ -373,8 +525,9 @@ namespace Proyecto_1229918_Montenegro
                                         break;
                                     }
                                 }
-                                while (encontrar == true && H.Length != 0);
-                                Continuar = ((H.Length == 0)) ? "PCSP" : "NPC";
+                                while (encontrar == true && U.Length != 0);
+                                Continuar = ((U.Length == 0)) ? "PCSP" : "NPC";
+                                cantidad = Continuar == "PCSP" ? cantidad + 1 : cantidad;
                             }
                             else
                             {
@@ -382,7 +535,7 @@ namespace Proyecto_1229918_Montenegro
                                 {
                                     do
                                     {
-                                        encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K, V, N, ref H, Q, A, G, C);
+                                        encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K, B, N, ref U, A, W, I,V);
                                         if (encontrar)
                                         {
                                             Aux += frase[0];
@@ -396,9 +549,10 @@ namespace Proyecto_1229918_Montenegro
                                     }
                                     while (encontrar == true);
                                     Continuar = ((contador >= 1)) ? "PCSP" : "NPC";
+                                    cantidad = Continuar == "PCSP" ? cantidad + 1 : cantidad;
                                 }
                             }
-                            if (Continuar == "NPC" && NodoActual.elemento.caracter != "G")
+                            if (Continuar == "NPC" && NodoActual.elemento.caracter != "W")
                             {
                                 frase = Aux + frase;
                                 Continuar = "PC";
@@ -409,12 +563,12 @@ namespace Proyecto_1229918_Montenegro
             }
             if (Continuar=="PC"||Continuar=="PCSP")
             {
-                RecorrerTokens(NodoActual.hijoDR, PadreAux, encontrar, ref frase, ref Continuar,K,V,N,H,Q,A,G,C);
+                RecorrerTokens(NodoActual.hijoDR, PadreAux, encontrar, ref frase, ref Continuar, K, B, N, U, A, W, I,V, ref cantidad);
                 if (NodoActual.elemento.caracter == "+" && frase.Length != 0 && NodoActual.hijoIZ.elemento.caracter == "|")
                 {
                     while (frase.Length != 0 && (Continuar == "PC" || Continuar == "PCSP"))
                     {
-                        RecorrerTokens(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar, K, V, N, H, Q, A, G, C);
+                        RecorrerTokens(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar, K, B, N, U, A, W, I,V, ref cantidad);
                     }
                 }
             }
@@ -444,7 +598,7 @@ namespace Proyecto_1229918_Montenegro
                 return;
             }
         }
-        private bool EncontrarCaracterAuxTokens(string cadena, char caracter, string K,char V,string N,ref string H, string Q, string A,string G,string C)
+        private bool EncontrarCaracterAuxTokens(string cadena, char caracter, string K,char B,string N,ref string U, string A,string W,string I,string V)
         {
             var encontrado = false;
             switch (cadena)
@@ -452,8 +606,8 @@ namespace Proyecto_1229918_Montenegro
                 case "K":
                     encontrado = (K[0]==caracter) ? true : false;
                     break;
-                case "V":
-                    encontrado = V.Equals(caracter) ? true : false;
+                case "B":
+                    encontrado = B.Equals(caracter) ? true : false;
                     break;
                 case "N":
                     encontrado = N.Contains(caracter) ? true : false;
@@ -461,52 +615,52 @@ namespace Proyecto_1229918_Montenegro
                 case "=":
                     encontrado = ('=' == caracter) ? true : false;
                     break;
-                case "H":
-                    encontrado = H.Contains(caracter) ? true : false;
+                case "U":
+                    encontrado = U.Contains(caracter) ? true : false;
                     if (encontrado)
                     {
-                        H = H.Substring(1);
+                        U = U.Substring(1);
                     }
                     else
                     {
-                        if (H[0] == 'C')
+                        if (U[0] == 'I')
                         {
-                            encontrado = C.Contains(caracter) ? true : false;
-                            H = H.Substring(1);
+                            encontrado = I.Contains(caracter) ? true : false;
+                            U = U.Substring(1);
                         }
                     }
                     break;
-                case "Q":
-                    encontrado = Q.Contains(caracter) ? true : false;
+                case "W":
+                    encontrado = W.Contains(caracter) ? true : false;
                     break;
                 case "A":
                     encontrado = A.Contains(caracter) ? true : false;
                     break;
-                case "G":
-                    encontrado = G.Contains(caracter) ? true : false;
+                case "V":
+                    encontrado = A.Contains(caracter) ? true : false;
                     break;
             }
             return encontrado;
         }
         //Métodos para Actions
-        public void RecorrerActions(Node NodoActual, Node PadreAux, bool encontrar, ref string frase, ref string Continuar,string N,char V,string B)
+        public void RecorrerActions(Node NodoActual, Node PadreAux, bool encontrar, ref string frase, ref string Continuar,string N,char B,string A)
         {
             if (NodoActual == null)
             {
                 return;
             }
-            RecorrerActions(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar,N,V,B);
+            RecorrerActions(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar,N,B,A);
             var R = false;
             EncontrarPadreActions(NodoActual, Raiz, ref PadreAux, ref R);
             var contador = 0;
-            if (frase.Length != 0)
+            if (frase != string.Empty)
             {
                 switch (PadreAux.elemento.caracter)
                 {
                     case ".":
-                        if (NodoActual.elemento.caracter == "="|| NodoActual.elemento.caracter == "'")
+                        if (NodoActual.elemento.caracter == "=" || NodoActual.elemento.caracter == "'")
                         {
-                            encontrar = EncontrarCaracterAuxActions(NodoActual.elemento.caracter, frase[0],N,V,B);
+                            encontrar = EncontrarCaracterAuxActions(NodoActual.elemento.caracter, frase[0], N, B, A);
                             if (encontrar)
                             {
                                 frase = frase.Substring(1);
@@ -516,22 +670,22 @@ namespace Proyecto_1229918_Montenegro
                         }
                         break;
                     case "+":
-                            do
+                        do
+                        {
+                            encontrar = EncontrarCaracterAuxActions(NodoActual.elemento.caracter, frase[0], N, B, A);
+                            if (encontrar)
                             {
-                                encontrar = EncontrarCaracterAuxActions(NodoActual.elemento.caracter, frase[0],N,V,B);
-                                if (encontrar)
-                                {
-                                    frase = frase.Substring(1);
-                                    contador++;
-                                }
+                                frase = frase.Substring(1);
+                                contador++;
                             }
-                            while (encontrar == true);
-                            Continuar = (contador >= 1) ? "PC" : "NPC";
+                        }
+                        while (encontrar == true);
+                        Continuar = (contador >= 1) ? "PC" : "NPC";
                         break;
                     case "*":
                         do
                         {
-                            encontrar = EncontrarCaracterAuxActions(NodoActual.elemento.caracter, frase[0],N,V,B);
+                            encontrar = EncontrarCaracterAuxActions(NodoActual.elemento.caracter, frase[0], N, B, A);
                             if (encontrar)
                             {
                                 frase = frase.Substring(1);
@@ -543,16 +697,13 @@ namespace Proyecto_1229918_Montenegro
                         break;
                 }
             }
-            if (Continuar == "PC" || Continuar == "PCSP")
+            else
             {
-                RecorrerActions(NodoActual.hijoDR, PadreAux, encontrar, ref frase, ref Continuar,N,V,B);
-                if (NodoActual.elemento.caracter == "+" && frase.Length != 0 && NodoActual.hijoIZ.elemento.caracter == "|")
-                {
-                    while (frase.Length != 0 && (Continuar == "PC" || Continuar == "PCSP"))
-                    {
-                        RecorrerActions(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar,N,V,B);
-                    }
-                }
+
+            }
+            if (Continuar == "PC")
+            {
+                RecorrerActions(NodoActual.hijoDR, PadreAux, encontrar, ref frase, ref Continuar,N,B,A);
             }
             else
             {
@@ -580,7 +731,7 @@ namespace Proyecto_1229918_Montenegro
                 return;
             }
         }
-        private bool EncontrarCaracterAuxActions(string cadena, char caracter,string N,char V,string B)
+        private bool EncontrarCaracterAuxActions(string cadena, char caracter,string N,char B,string A)
         {
             var encontrado = false;
             switch (cadena)
@@ -588,8 +739,8 @@ namespace Proyecto_1229918_Montenegro
                 case "N":
                     encontrado = (N.Contains(caracter)) ? true : false;
                     break;
-                case "V":
-                    encontrado = (V.Equals(caracter)) ? true : false;
+                case "B":
+                    encontrado = (B.Equals(caracter)) ? true : false;
                     break;
                 case "=":
                     encontrado = ('=' == caracter) ? true : false;
@@ -597,8 +748,8 @@ namespace Proyecto_1229918_Montenegro
                 case "'":
                     encontrado = ("'".Contains(caracter)) ? true : false;
                     break;
-                case "B":
-                    encontrado = (B.Contains(caracter)) ? true : false;
+                case "A":
+                    encontrado = (A.Contains(caracter)) ? true : false;
                     break;
             }
             return encontrado;
