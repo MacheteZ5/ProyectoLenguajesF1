@@ -33,7 +33,7 @@ namespace Proyecto_1229918_Montenegro
                 foreach (string chain in StringList)
                 {
                     var ListNode = new ListNode();
-                    if (chain == "SETS")
+                    if (chain == "SETS"||chain.ToUpper()=="SETS")
                     {
                         EsSETS = true;
                     }

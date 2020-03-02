@@ -58,6 +58,10 @@ namespace Proyecto_1229918_Montenegro
                                         frase = frase.Substring(1);
                                         contador++;
                                     }
+                                    if(frase.Length==0)
+                                    {
+                                        break;
+                                    }
                                 }
                                 while (encontrar == true);
                                 Continuar = (contador >= 1) ? "PC" : "NPC";
@@ -101,18 +105,7 @@ namespace Proyecto_1229918_Montenegro
                                 }
                                 else
                                 {
-                                    if (frase == string.Empty)
-                                    {
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        if (frase[0] != '+')
-                                        {
-                                            encontrar = false;
-                                            break;
-                                        }
-                                    }
+                                    break;
                                 }
                                 if (encontrar)
                                 {
@@ -124,7 +117,7 @@ namespace Proyecto_1229918_Montenegro
                                     break;
                                 }
                             }
-                            while (encontrar == true && frase[0] != '+');
+                            while (encontrar == true && (C.Length != 0 && D.Length != 0 && F.Length != 0 && G.Length != 0 && H.Length != 0 && J.Length != 0 && L.Length != 0 && M.Length != 0 && Ñ.Length != 0 && O.Length != 0 && Q.Length != 0 && R.Length != 0 && R.Length != 0 && S.Length != 0 && T.Length != 0));
                             Continuar = ((C.Length == 0 || D.Length == 0 || F.Length == 0 || G.Length == 0 || H.Length == 0 || J.Length == 0 || L.Length == 0 || M.Length == 0 || Ñ.Length == 0 || O.Length == 0 || Q.Length == 0 || R.Length == 0 || R.Length == 0 || S.Length == 0 || T.Length == 0)) ? "PCSP" : "NPC";
                             cantidad = Continuar == "PCSP" ? cantidad + 1 : cantidad;
                             if (Continuar == "NPC" && NodoActual.elemento.caracter != "G")
@@ -141,7 +134,14 @@ namespace Proyecto_1229918_Montenegro
                             frase = frase.Substring(1);
                             contador++;
                         }
-                        Continuar = (contador >= 0) ? "PC" : "NPC";
+                        if (frase.Length > 1)
+                        {
+                            Continuar = (contador >= 1) ? "PC" : "NPC";
+                        }
+                        else
+                        {
+                            Continuar = (contador >= 0) ? "NPC" : "PC";
+                        }
                         break;
                 }
             }
@@ -401,13 +401,13 @@ namespace Proyecto_1229918_Montenegro
             return encontrado;
         }
         //Métodos para tokens
-        public void RecorrerTokens(Node NodoActual, Node PadreAux, bool encontrar, ref string frase, ref string Continuar, string K, char B, string N, string U, string A, string W, string I, string V, ref int cantidad, string Z, string Y)
+        public void RecorrerTokens(Node NodoActual, Node PadreAux, bool encontrar, ref string frase, ref string Continuar, string K, char B, string N, string U, string A, string W, string I, string V, ref int cantidad, ref int contp, ref int contll)
         {
             if (NodoActual == null)
             {
                 return;
             }
-            RecorrerTokens(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar, K, B, N, U, A, W, I, V, ref cantidad, Z, Y);
+            RecorrerTokens(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar, K, B, N, U, A, W, I, V, ref cantidad, ref contp, ref contll);
             var R = false;
             EncontrarPadre(NodoActual, Raiz, ref PadreAux, ref R);
             var contador = 0;
@@ -521,6 +521,8 @@ namespace Proyecto_1229918_Montenegro
                                         encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K, B, N, ref U, A, W, I, V);
                                         if (encontrar)
                                         {
+                                            contp=(frase[0]=='('|| frase[0] == ')') ?contp+1:contp;
+                                            contll = (frase[0] == '{' || frase[0] == '}') ? contll + 1 : contll;
                                             Aux += frase[0];
                                             frase = frase.Substring(1);
                                             contador++;
@@ -546,12 +548,12 @@ namespace Proyecto_1229918_Montenegro
             }
             if (Continuar == "PC" || Continuar == "PCSP")
             {
-                RecorrerTokens(NodoActual.hijoDR, PadreAux, encontrar, ref frase, ref Continuar, K, B, N, U, A, W, I, V, ref cantidad, Z, Y);
+                RecorrerTokens(NodoActual.hijoDR, PadreAux, encontrar, ref frase, ref Continuar, K, B, N, U, A, W, I, V, ref cantidad, ref contp, ref contll);
                 if (NodoActual.elemento.caracter == "+" && frase.Length != 0 && NodoActual.hijoIZ.elemento.caracter == "|")
                 {
                     while (frase.Length != 0 && (Continuar == "PC" || Continuar == "PCSP"))
                     {
-                        RecorrerTokens(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar, K, B, N, U, A, W, I, V, ref cantidad, Z, Y);
+                        RecorrerTokens(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar, K, B, N, U, A, W, I, V, ref cantidad, ref contp, ref contll );
                     }
                 }
             }
