@@ -46,7 +46,7 @@ namespace Proyecto_1229918_Montenegro
             var W = "+*/()[]{}|?";
             //Expresiones A utilizar
             //Expresión SETS
-            var ExpSets = "((A+.B*.=.B*).((C|D|J|L|M|Ñ|O|Q|R|S|T|H|F|G).P?)+).#";
+            var ExpSets = "((A+.B*.=.B*).((C|D|J|L|M|Ñ|O|Q|R|S|T|H|F|G).B*.P?.B*)+).#";
             //EXpresión TOKENS
             var ExpTokens = "((K.B+.N+.B*.=.B*).(U|A|B|W)+).#";
             //EXpresión Actions

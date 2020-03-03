@@ -50,21 +50,24 @@ namespace Proyecto_1229918_Montenegro
                             }
                             else
                             {
-                                do
+                                if (NodoActual.hijoIZ == null && NodoActual.hijoDR == null)
                                 {
-                                    encontrar = EncontrarCaracterAux(NodoActual.elemento.caracter, frase[0], A, B, ref C, ref D, E, ref F, ref G, ref H, ref J, ref L, ref M, N, ref Ñ, ref O, ref Q, ref R, ref S, ref T, P);
-                                    if (encontrar == true)
+                                    do
                                     {
-                                        frase = frase.Substring(1);
-                                        contador++;
+                                        encontrar = EncontrarCaracterAux(NodoActual.elemento.caracter, frase[0], A, B, ref C, ref D, E, ref F, ref G, ref H, ref J, ref L, ref M, N, ref Ñ, ref O, ref Q, ref R, ref S, ref T, P);
+                                        if (encontrar == true)
+                                        {
+                                            frase = frase.Substring(1);
+                                            contador++;
+                                        }
+                                        if (frase.Length == 0)
+                                        {
+                                            break;
+                                        }
                                     }
-                                    if(frase.Length==0)
-                                    {
-                                        break;
-                                    }
+                                    while (encontrar == true);
+                                    Continuar = (contador >= 1) ? "PC" : "NPC";
                                 }
-                                while (encontrar == true);
-                                Continuar = (contador >= 1) ? "PC" : "NPC";
                             }
                         }
                         break;
@@ -136,11 +139,11 @@ namespace Proyecto_1229918_Montenegro
                         }
                         if (frase.Length > 1)
                         {
-                            Continuar = (contador >= 1) ? "PC" : "NPC";
+                            Continuar = (contador == 1) ? "PC" : "NPC";
                         }
                         else
                         {
-                            Continuar = (contador >= 0) ? "NPC" : "PC";
+                            Continuar = (contador == 1) ? "NPC" : "PC";
                         }
                         break;
                 }
@@ -783,11 +786,13 @@ namespace Proyecto_1229918_Montenegro
                         }
                         break;
                     case "+":
+                        var Aux = string.Empty;
                         do
                         {
                             encontrar = EncontrarCaracterAuxErrors(NodoActual.elemento.caracter, frase[0], N, B, A);
                             if (encontrar)
                             {
+                                Aux += frase[0];
                                 frase = frase.Substring(1);
                                 contador++;
                             }
@@ -798,7 +803,11 @@ namespace Proyecto_1229918_Montenegro
                         }
                         while (encontrar == true);
                         Continuar = (contador >= 1) ? "PC" : "NPC";
-                        Cantidad = (Continuar == "PC") ? Cantidad + 1 : Cantidad;
+                        Cantidad = (Continuar == "PC"&&frase.Length==0) ? Cantidad + 1 : Cantidad;
+                        if (NodoActual.elemento.caracter == "A")
+                        {
+                            Continuar = (Aux[Aux.Length-1]=='R'&& Aux[Aux.Length - 2] == 'O'&& Aux[Aux.Length - 3] == 'R'&& Aux[Aux.Length - 4] == 'R'&& Aux[Aux.Length - 5] == 'E') ? "PC" : "NPC";
+                        }
                         break;
                     case "*":
                         do
