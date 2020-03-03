@@ -10,7 +10,7 @@ namespace Proyecto_1229918_Montenegro
     public class AuxClass
     {
         //desde aquí
-        public void LecturaArchivo(string File, List<string> StringList, ref List<ListNode> ListaSets, ref List<ListNode> ListaTokens, ref List<ListNode> ListaActions, ref List<ListNode> ListaErrors)
+        public void LecturaArchivo(string File, List<string> StringList, ref List<ListNode> ListaSets, ref List<ListNode> ListaTokens, ref List<ListNode> ListaActions, ref List<ListNode> ListaErrors, ref bool sets)
         {
             var EsSETS = false;
             var EsTokens = false;
@@ -33,7 +33,11 @@ namespace Proyecto_1229918_Montenegro
                 foreach (string chain in StringList)
                 {
                     var ListNode = new ListNode();
-                    if (chain == "SETS"||chain.ToUpper()=="SETS")
+                    if (contador == 1 && chain != "SETS" && chain != "TOKENS")
+                    {
+                        sets = true;
+                    }
+                    if (chain == "SETS")
                     {
                         EsSETS = true;
                     }

@@ -1,5 +1,5 @@
 SETS
-	   = '_'+'A'..'Z'+'a'..'z'+CHR(300)
+	LETRA   = '_'+'A'..'Z'+'a'..'z'+CHR(300)+
 	DIGITO  = '0'..'9'
 	CHARSET = CHR(32)..CHR(254)
 TOKENS
