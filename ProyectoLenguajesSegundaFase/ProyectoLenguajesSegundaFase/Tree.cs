@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proyecto_1229918_Montenegro
+namespace ProyectoLenguajesSegundaFase
 {
     public struct Elements
     {
@@ -13,7 +13,7 @@ namespace Proyecto_1229918_Montenegro
         public string Last;
         public bool Null;
     }
-    public class Node        
+    public class Node
     {
         public Elements elemento;
         public Node hijoIZ;
@@ -292,7 +292,7 @@ namespace Proyecto_1229918_Montenegro
                                         encontrar = EncontrarCaracterAuxTokens(NodoActual.elemento.caracter, frase[0], K, B, N, ref U, A, W, I, V);
                                         if (encontrar)
                                         {
-                                            contp=(frase[0]=='('|| frase[0] == ')') ?contp+1:contp;
+                                            contp = (frase[0] == '(' || frase[0] == ')') ? contp + 1 : contp;
                                             contll = (frase[0] == '{' || frase[0] == '}') ? contll + 1 : contll;
                                             Aux += frase[0];
                                             frase = frase.Substring(1);
@@ -324,7 +324,7 @@ namespace Proyecto_1229918_Montenegro
                 {
                     while (frase.Length != 0 && (Continuar == "PC" || Continuar == "PCSP"))
                     {
-                        RecorrerTokens(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar, K, B, N, U, A, W, I, V, ref cantidad, ref contp, ref contll );
+                        RecorrerTokens(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar, K, B, N, U, A, W, I, V, ref cantidad, ref contp, ref contll);
                     }
                 }
             }
@@ -416,13 +416,13 @@ namespace Proyecto_1229918_Montenegro
             }
         }
         //Métodos para Errors
-        public void RecorrerErrors(Node NodoActual, Node PadreAux, bool encontrar, ref string frase, ref string Continuar,string A, char B, string N, ref int Cantidad)
+        public void RecorrerErrors(Node NodoActual, Node PadreAux, bool encontrar, ref string frase, ref string Continuar, string A, char B, string N, ref int Cantidad)
         {
             if (NodoActual == null)
             {
                 return;
             }
-            RecorrerErrors(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar,A,B,N,ref Cantidad);
+            RecorrerErrors(NodoActual.hijoIZ, PadreAux, encontrar, ref frase, ref Continuar, A, B, N, ref Cantidad);
             var R = false;
             EncontrarPadre(NodoActual, Raiz, ref PadreAux, ref R);
             var contador = 0;
@@ -460,10 +460,10 @@ namespace Proyecto_1229918_Montenegro
                         }
                         while (encontrar == true);
                         Continuar = (contador >= 1) ? "PC" : "NPC";
-                        Cantidad = (Continuar == "PC"&&frase.Length==0) ? Cantidad + 1 : Cantidad;
+                        Cantidad = (Continuar == "PC" && frase.Length == 0) ? Cantidad + 1 : Cantidad;
                         if (NodoActual.elemento.caracter == "A")
                         {
-                            Continuar = (Aux[Aux.Length-1]=='R'&& Aux[Aux.Length - 2] == 'O'&& Aux[Aux.Length - 3] == 'R'&& Aux[Aux.Length - 4] == 'R'&& Aux[Aux.Length - 5] == 'E') ? "PC" : "NPC";
+                            Continuar = (Aux[Aux.Length - 1] == 'R' && Aux[Aux.Length - 2] == 'O' && Aux[Aux.Length - 3] == 'R' && Aux[Aux.Length - 4] == 'R' && Aux[Aux.Length - 5] == 'E') ? "PC" : "NPC";
                         }
                         break;
                     case "*":
@@ -487,7 +487,7 @@ namespace Proyecto_1229918_Montenegro
             }
             if (Continuar == "PC")
             {
-                RecorrerErrors(NodoActual.hijoDR, PadreAux, encontrar, ref frase, ref Continuar,A,B,N,ref Cantidad);
+                RecorrerErrors(NodoActual.hijoDR, PadreAux, encontrar, ref frase, ref Continuar, A, B, N, ref Cantidad);
             }
             else
             {
@@ -528,7 +528,7 @@ namespace Proyecto_1229918_Montenegro
             var X = false;
             EncontrarPadre(NodoActual, raiz, ref PadreAux, ref X);
             var contador = 0;
-            if (NodoActual.hijoDR == null && NodoActual.hijoIZ == null&&frase.Length!=0)
+            if (NodoActual.hijoDR == null && NodoActual.hijoIZ == null && frase.Length != 0)
             {
                 switch (PadreAux.elemento.caracter)
                 {
@@ -626,7 +626,7 @@ namespace Proyecto_1229918_Montenegro
             if (Continuar == "PC" || Continuar == "PCSP")
             {
                 RecorrerS(NodoActual.hijoDR, raiz, PadreAux, encontrar, ref frase, ref Continuar, A, B, C, D, E, F, G, H, J, L, M, N, Ñ, O, Q, R, S, T, P, ref cantidad);
-                if (NodoActual.elemento.caracter == "+" && frase.Length != 0 && NodoActual.hijoIZ.elemento.caracter == "."&&Continuar!="NPC")
+                if (NodoActual.elemento.caracter == "+" && frase.Length != 0 && NodoActual.hijoIZ.elemento.caracter == "." && Continuar != "NPC")
                 {
                     while (frase.Length != 0 && (Continuar == "PC" || Continuar == "PCSP"))
                     {
@@ -649,7 +649,7 @@ namespace Proyecto_1229918_Montenegro
             var R = false;
             EncontrarPadre(NodoActual, Raiz, ref PadreAux, ref R);
             var contador = 0;
-            if (frase != string.Empty&&NodoActual.hijoDR==null&&NodoActual.hijoIZ==null)
+            if (frase != string.Empty && NodoActual.hijoDR == null && NodoActual.hijoIZ == null)
             {
                 switch (PadreAux.elemento.caracter)
                 {
@@ -664,7 +664,7 @@ namespace Proyecto_1229918_Montenegro
                         if (NodoActual.elemento.caracter == "'")
                         {
                             cantidad = Continuar == "PC" ? cantidad + 1 : cantidad;
-                        }  
+                        }
                         break;
                     case "+":
                         do
@@ -717,7 +717,7 @@ namespace Proyecto_1229918_Montenegro
             var R = false;
             EncontrarPadre(NodoActual, Raiz, ref PadreAux, ref R);
             var contador = 0;
-            if (frase != string.Empty&&NodoActual.hijoDR==null&&NodoActual.hijoIZ==null)
+            if (frase != string.Empty && NodoActual.hijoDR == null && NodoActual.hijoIZ == null)
             {
                 switch (PadreAux.elemento.caracter)
                 {
@@ -1093,5 +1093,6 @@ namespace Proyecto_1229918_Montenegro
             }
             return encontrado;
         }
+
     }
 }

@@ -53,12 +53,15 @@ namespace Proyecto_1229918_Montenegro
             var ExpActions = "(N+.B*.=.B*.'.A+.').#";
             //EXpresión Errors
             var ExpErrors = "(A+.B*.=.B*.N+).#";
+            // Expresión Arbol Total
             //Listas
             var StringList = new List<string>();
             var ListaSets = new List<ListNode>();
             var ListaTokens = new List<ListNode>();
             var ListaActions = new List<ListNode>();
             var ListaErrors = new List<ListNode>();
+            var TAux = new List<string>();
+            var SAux = new List<string>();
             //Lectura de archivos en bytes 
             Console.WriteLine("Ingrese Un archivo el archivo de texto");
             var File = Console.ReadLine();
@@ -71,7 +74,8 @@ namespace Proyecto_1229918_Montenegro
             {
                 var sets = false;
                 AuxClass nuevo = new AuxClass();
-                nuevo.LecturaArchivo(File, StringList, ref ListaSets, ref ListaTokens, ref ListaActions, ref ListaErrors, ref sets);
+                FLFN flfn = new FLFN();
+                nuevo.LecturaArchivo(File, StringList, ref ListaSets, ref ListaTokens, ref ListaActions, ref ListaErrors, ref sets, ref TAux, ref SAux);
                 var error = false;
                 var cantidad = 0;
                 if (!sets)
@@ -87,7 +91,7 @@ namespace Proyecto_1229918_Montenegro
                             var TreeSETS = new Tree();
                             var encontrar = false;
                             TreeSETS.Raiz = nuevo.CreateTree(ExpSets);
-                            TreeSETS.RecorrerSets(TreeSETS.Raiz, TreeSETS.Raiz, TreeSETS.Raiz, encontrar, ref ListNode.frase, ref Continuar, A, B, C, D, E, F, G, H, J, L, M, N, Ñ, O, Q, R, S, T, P, ref cantidad);
+                            TreeSETS.RecorrerS(TreeSETS.Raiz, TreeSETS.Raiz, TreeSETS.Raiz, encontrar, ref ListNode.frase, ref Continuar, A, B, C, D, E, F, G, H, J, L, M, N, Ñ, O, Q, R, S, T, P, ref cantidad);
                             if (Continuar == "NPC" || cantidad == 0)
                             {
                                 Console.WriteLine("La linea " + ListNode.Nlinea + " del texto contiene un error");
@@ -178,7 +182,7 @@ namespace Proyecto_1229918_Montenegro
                                                                 TreeActions.Raiz = nuevo.CreateTree(ExpActions);
                                                                 var encontrar = false;
                                                                 var Continuar = string.Empty;
-                                                                TreeActions.RecorrerActions(TreeActions.Raiz, TreeActions.Raiz, encontrar, ref ListNode.frase, ref Continuar, N, B, A, ref cantidad);
+                                                                TreeActions.RecorrerA(TreeActions.Raiz, TreeActions.Raiz, encontrar, ref ListNode.frase, ref Continuar, N, B, A, ref cantidad);
                                                                 if (Continuar == "NPC" || cantidad < 2)
                                                                 {
                                                                     Console.WriteLine("La linea " + ListNode.Nlinea + " del texto contiene un error");
@@ -300,12 +304,40 @@ namespace Proyecto_1229918_Montenegro
                     Console.WriteLine("El archivo que ingresó, está mal implementado su método SETS o está mal implementado su método TOKENS");
                     Console.ReadLine();
                 }
+                if (!error)
+                {
+                    //Generar expresión Tokens
+                    TAux.Remove(TAux[0]);
+                    var Exp = flfn.ObtenerExpR(TAux, SAux);                    
+                    //crear el arbol de expresiones First, Last, Nullable
+                    var Tree = new Tree();
+                    Tree.Raiz = nuevo.CreateTreeP2(Exp);
+                    var contador = 1;
+                    flfn.IngresarFLH(Tree.Raiz,ref contador);
+                    flfn.RecorrerFLN(Tree.Raiz);
+                    var diccionario = new Dictionary<int,string>();
+                    for(int x = 1; x < contador; x++)
+                    {
+                        diccionario.Add(x, string.Empty);
+                    }
+                    //generar tabla follow
+                    diccionario = flfn.TablaFollow(Tree.Raiz, diccionario,ref contador);
+                    //generar tabla de S
+                    contador = 1;
+                    while(contador<diccionario.Count())
+                    {
+                        diccionario[contador] = diccionario[contador].Trim(',');
+                        contador++;
+                    }
+                    var i = 0;
+                }
             }
             else
             {
                 Console.WriteLine("El archivo que ingresó no es un archivo de texto");
                 Console.ReadLine();
             }
+            
         }        
     }
 }
