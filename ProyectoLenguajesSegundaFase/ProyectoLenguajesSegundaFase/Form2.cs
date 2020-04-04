@@ -285,86 +285,93 @@ namespace ProyectoLenguajesSegundaFase
                 //Generar expresión Tokens
                 TAux.Remove(TAux[0]);
                 var Exp = flfn.ObtenerExpR(TAux, SAux);
-                //crear el arbol de expresiones First, Last, Nullable
-                var Tree = new Tree();
-                Tree.Raiz = nuevo.CreateTreeP2(Exp);
-                var contador = 1;
-                flfn.IngresarFLH(Tree.Raiz, ref contador);
-                flfn.RecorrerFLN(Tree.Raiz);
-                var diccionario = new Dictionary<int, string>();
-                for (int x = 1; x < contador; x++)
+                if(Exp != string.Empty)
                 {
-                    diccionario.Add(x, string.Empty);
-                }
-                //generar tabla follow
-                diccionario = flfn.TablaFollow(Tree.Raiz, diccionario, ref contador);
-                //generar tabla de S (tabla de estados)
-                var ListaSimbolos = new List<string>();
-                ListaSimbolos = flfn.ObtenerSímbolos(Tree.Raiz, ListaSimbolos);
-                ListaSimbolos.Remove(ListaSimbolos.Last());
-                var dic = new Dictionary<string, string[]>();
-                dic.Add(Tree.Raiz.elemento.First, null);
-                dic = flfn.Transición(Tree.Raiz, dic, ListaSimbolos, diccionario);
-                //Mostrar Tabla FLN
-                var matrix = new List<string[]>();
-                flfn.MostrarFLN(Tree.Raiz, ref matrix);
-                DataGridViewRow Matriz = new DataGridViewRow();
-                Matriz.CreateCells(FLN1);
-                Matriz.Cells[0].Value = "Símbolo";
-                Matriz.Cells[1].Value = "First";
-                Matriz.Cells[2].Value = "Last";
-                Matriz.Cells[3].Value = "Nullable";
-                for (int i = 0; i < matrix.Count(); i++)
-                {
-                    FLN1.Rows.Add();
-                    var aux = matrix[i];
-                    FLN1.Rows[i].Cells[0].Value = aux[0];
-                    FLN1.Rows[i].Cells[1].Value = aux[1];
-                    FLN1.Rows[i].Cells[2].Value = aux[2];
-                    FLN1.Rows[i].Cells[3].Value = aux[3];
-                }
-                //Mostrar Tabla Follow
-                contador = 1;
-                while (contador < diccionario.Count())
-                {
-                    diccionario[contador] = diccionario[contador].Trim(',');
-                    contador++;
-                }
-                var z = 0;
-                foreach (int clave in diccionario.Keys)
-                {
-                    Follow.Rows.Add();
-                    var valor = diccionario.FirstOrDefault(x => x.Key == clave).Value;
-                    Follow.Rows[z].Cells[0].Value = clave;
-                    Follow.Rows[z].Cells[1].Value = valor;
-                    z++;
-                }
-
-                //mostrar tabla de estados
-                DataGridViewTextBoxColumn col = new DataGridViewTextBoxColumn();
-                col.HeaderText = "ESTADOS";
-                col.Width = 200;
-                estado.Columns.Add(col);
-                foreach (string simbol in ListaSimbolos)
-                {
-                    DataGridViewTextBoxColumn columna = new DataGridViewTextBoxColumn();
-                    columna.HeaderText = simbol;
-                    columna.Width = 200;
-                    estado.Columns.Add(columna);
-                }
-                z = 0;
-                foreach (string clave in dic.Keys)
-                {
-                    estado.Rows.Add();
-                    var valor = dic.FirstOrDefault(x => x.Key == clave).Value;
-                    estado.Rows[z].Cells[0].Value = clave;
-                    var cont = 1;
-                    for(int x = 0;x<valor.Length;x++)
+                    //crear el arbol de expresiones First, Last, Nullable
+                    var Tree = new Tree();
+                    Tree.Raiz = nuevo.CreateTreeP2(Exp);
+                    var contador = 1;
+                    flfn.IngresarFLH(Tree.Raiz, ref contador);
+                    flfn.RecorrerFLN(Tree.Raiz);
+                    var diccionario = new Dictionary<int, string>();
+                    for (int x = 1; x < contador; x++)
                     {
-                        estado.Rows[z].Cells[cont].Value = valor[x];
-                        cont++;
+                        diccionario.Add(x, string.Empty);
                     }
-                    z++;
+                    //generar tabla follow
+                    diccionario = flfn.TablaFollow(Tree.Raiz, diccionario, ref contador);
+                    //generar tabla de S (tabla de estados)
+                    var ListaSimbolos = new List<string>();
+                    ListaSimbolos = flfn.ObtenerSímbolos(Tree.Raiz, ListaSimbolos);
+                    ListaSimbolos.Remove(ListaSimbolos.Last());
+                    var dic = new Dictionary<string, string[]>();
+                    dic.Add(Tree.Raiz.elemento.First, null);
+                    dic = flfn.Transición(Tree.Raiz, dic, ListaSimbolos, diccionario);
+                    //Mostrar Tabla FLN
+                    var matrix = new List<string[]>();
+                    flfn.MostrarFLN(Tree.Raiz, ref matrix);
+                    DataGridViewRow Matriz = new DataGridViewRow();
+                    Matriz.CreateCells(FLN1);
+                    Matriz.Cells[0].Value = "Símbolo";
+                    Matriz.Cells[1].Value = "First";
+                    Matriz.Cells[2].Value = "Last";
+                    Matriz.Cells[3].Value = "Nullable";
+                    for (int i = 0; i < matrix.Count(); i++)
+                    {
+                        FLN1.Rows.Add();
+                        var aux = matrix[i];
+                        FLN1.Rows[i].Cells[0].Value = aux[0];
+                        FLN1.Rows[i].Cells[1].Value = aux[1];
+                        FLN1.Rows[i].Cells[2].Value = aux[2];
+                        FLN1.Rows[i].Cells[3].Value = aux[3];
+                    }
+                    //Mostrar Tabla Follow
+                    contador = 1;
+                    while (contador < diccionario.Count())
+                    {
+                        diccionario[contador] = diccionario[contador].Trim(',');
+                        contador++;
+                    }
+                    var z = 0;
+                    foreach (int clave in diccionario.Keys)
+                    {
+                        Follow.Rows.Add();
+                        var valor = diccionario.FirstOrDefault(x => x.Key == clave).Value;
+                        Follow.Rows[z].Cells[0].Value = clave;
+                        Follow.Rows[z].Cells[1].Value = valor;
+                        z++;
+                    }
+
+                    //mostrar tabla de estados
+                    DataGridViewTextBoxColumn col = new DataGridViewTextBoxColumn();
+                    col.HeaderText = "ESTADOS";
+                    col.Width = 200;
+                    estado.Columns.Add(col);
+                    foreach (string simbol in ListaSimbolos)
+                    {
+                        DataGridViewTextBoxColumn columna = new DataGridViewTextBoxColumn();
+                        columna.HeaderText = simbol;
+                        columna.Width = 200;
+                        estado.Columns.Add(columna);
+                    }
+                    z = 0;
+                    foreach (string clave in dic.Keys)
+                    {
+                        estado.Rows.Add();
+                        var valor = dic.FirstOrDefault(x => x.Key == clave).Value;
+                        estado.Rows[z].Cells[0].Value = clave;
+                        var cont = 1;
+                        for (int x = 0; x < valor.Length; x++)
+                        {
+                            estado.Rows[z].Cells[cont].Value = valor[x];
+                            cont++;
+                        }
+                        z++;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("El archivo contiene valores en TOKENS que no están escritos en SETS");
                 }
             }
         }

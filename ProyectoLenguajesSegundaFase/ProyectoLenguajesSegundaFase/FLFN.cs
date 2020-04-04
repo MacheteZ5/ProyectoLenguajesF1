@@ -41,55 +41,81 @@ namespace ProyectoLenguajesSegundaFase
             var Aux = new List<string>();
             var List = new List<string>();
             var dic = new Dictionary<string, char>();
+            var error = false;
+            var final = "((";
             if (SAux.Count() != 0)
             {
                 SAux.Remove(SAux[0]);
                 List = GenerarListaSETS(SAux);
             }
-            foreach (string cadena in ListaTokens)
+            else
             {
-                var CAux = encontrarIgual(cadena);
-                Aux.Add(CAux);
-            }
-            //Reemplazar los valores según la tabla SETS
-            var nuevo = "'";
-            if (List.Count() != 0)
-            {
-                foreach (string cadena in Aux)
+                foreach (string cadena in ListaTokens)
                 {
-                    Expression = Ajustar(cadena, List, ref dic, ref Y);
-                    Final.Add(Expression);
+                    if(cadena.Contains("DIGITO")|| cadena.Contains("LETRA")|| cadena.Contains("CHARSET"))
+                    {
+                        error = true;
+                        break;
+                    }
                 }
             }
-            //concatenar todo en una frase
-            Expression = string.Empty;
-            foreach (string frase in Final)
+            if (!error)
             {
-                Expression += Concatenar(frase);
-                Expression += '|';
-            }
-            Expression = Expression.Trim('|');
-            var final = "((";
-            for (int i = 0; i < Expression.Length; i++)
-            {
-                var aux = dic.FirstOrDefault(x => x.Value == Expression[i]).Value;
-                var aus = dic.FirstOrDefault(x => x.Value == Expression[i]).Key;
-                if (i < Expression.Length - 1)
+                foreach (string cadena in ListaTokens)
                 {
-                    if (Expression[i] == aux && Expression[i + 1] != nuevo[0])
+                    var CAux = encontrarIgual(cadena);
+                    Aux.Add(CAux);
+                }
+                //Reemplazar los valores según la tabla SETS
+                var nuevo = "'";
+                if (List.Count() != 0)
+                {
+                    foreach (string cadena in Aux)
                     {
-                        var reserva = dic.FirstOrDefault(x => x.Value == Expression[i]).Key;
-                        final += reserva;
+                        Expression = Ajustar(cadena, List, ref dic, ref Y);
+                        Final.Add(Expression);
+                    }
+                }
+                else
+                {
+                    foreach (string cadena in Aux)
+                    {
+                        Final.Add(cadena);
+                    }
+                }
+                //concatenar todo en una frase
+                Expression = string.Empty;
+                foreach (string frase in Final)
+                {
+                    Expression += Concatenar(frase);
+                    Expression += '|';
+                }
+                Expression = Expression.Trim('|');
+                for (int i = 0; i < Expression.Length; i++)
+                {
+                    var aux = dic.FirstOrDefault(x => x.Value == Expression[i]).Value;
+                    var aus = dic.FirstOrDefault(x => x.Value == Expression[i]).Key;
+                    if (i < Expression.Length - 1)
+                    {
+                        if (Expression[i] == aux && Expression[i + 1] != nuevo[0])
+                        {
+                            var reserva = dic.FirstOrDefault(x => x.Value == Expression[i]).Key;
+                            final += reserva;
+                        }
+                        else
+                        {
+                            final += Expression[i];
+                        }
                     }
                     else
                     {
                         final += Expression[i];
                     }
                 }
-                else
-                {
-                    final += Expression[i];
-                }
+            }
+            else
+            {
+                return string.Empty;
             }
             final += ").#)";
             return final;
@@ -112,11 +138,20 @@ namespace ProyectoLenguajesSegundaFase
         }
         private string Concatenar(string aux)
         {
+            if(aux.Contains("RESERVADAS"))
+            {
+                aux = aux.Replace("RESERVADAS()", " ");
+            }
+            if(aux.Contains('{'))
+            {
+                aux = aux.Replace('{', ' ');
+                aux = aux.Replace('}', ' ');
+            }
             var caracter = "'";
             string Exp = string.Empty;
             for (int i = 0; i < aux.Length; i++)
             {
-                if (aux[i] != ' ')
+                if ((aux[i] != ' ') && (!"    \t".Contains(aux[i])))
                 {
                     if (aux[i] != '*' && aux[i] != '+' && aux[i] != '|' && aux[i] != ')' && aux[i] != '(' && aux[i] != caracter[0])
                     {
@@ -126,7 +161,21 @@ namespace ProyectoLenguajesSegundaFase
                     {
                         if (aux[i] == '(')
                         {
-                            Exp += aux[i];
+                            if (i == 0)
+                            {
+                                Exp += aux[i];
+                            }
+                            else
+                            {
+                                if (Exp[Exp.Length-1]!='.')
+                                {
+                                    Exp += "." + aux[i];
+                                }
+                                else
+                                {
+                                    Exp += aux[i];
+                                }
+                            }
                         }
                         else
                         {
@@ -141,9 +190,12 @@ namespace ProyectoLenguajesSegundaFase
                             }
                             else
                             {
-                                if (Exp[Exp.Length - 1] == '.')
+                                if(Exp.Length!=0)
                                 {
-                                    Exp = Exp.Trim('.');
+                                    if (Exp[Exp.Length - 1] == '.')
+                                    {
+                                        Exp = Exp.Trim('.');
+                                    }
                                 }
                                 Exp += aux[i];
                             }

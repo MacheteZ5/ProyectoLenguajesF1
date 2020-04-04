@@ -53,6 +53,7 @@
             this.pantalla1.Name = "pantalla1";
             this.pantalla1.Size = new System.Drawing.Size(386, 516);
             this.pantalla1.TabIndex = 0;
+            //this.pantalla1.SelectedIndexChanged += new System.EventHandler(this.pantalla1_SelectedIndexChanged);
             // 
             // FLN1
             // 
