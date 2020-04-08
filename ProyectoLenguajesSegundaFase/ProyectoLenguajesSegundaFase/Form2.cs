@@ -13,6 +13,7 @@ namespace ProyectoLenguajesSegundaFase
     public partial class Form2 : Form
     {
         string File = string.Empty;
+        Node Ex = default;
         public Form2(string archivo)
         {
             InitializeComponent();
@@ -287,9 +288,11 @@ namespace ProyectoLenguajesSegundaFase
                 var Exp = flfn.ObtenerExpR(TAux, SAux);
                 if(Exp != string.Empty)
                 {
+                    Expr.Text=(Exp);
                     //crear el arbol de expresiones First, Last, Nullable
                     var Tree = new Tree();
                     Tree.Raiz = nuevo.CreateTreeP2(Exp);
+                    Ex = Tree.Raiz;
                     var contador = 1;
                     flfn.IngresarFLH(Tree.Raiz, ref contador);
                     flfn.RecorrerFLN(Tree.Raiz);
@@ -341,7 +344,6 @@ namespace ProyectoLenguajesSegundaFase
                         Follow.Rows[z].Cells[1].Value = valor;
                         z++;
                     }
-
                     //mostrar tabla de estados
                     DataGridViewTextBoxColumn col = new DataGridViewTextBoxColumn();
                     col.HeaderText = "ESTADOS";
@@ -374,6 +376,18 @@ namespace ProyectoLenguajesSegundaFase
                     MessageBox.Show("El archivo contiene valores en TOKENS que no están escritos en SETS");
                 }
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form3 form = new Form3(Ex);
+            form.Show();
+            this.Visible = false;
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

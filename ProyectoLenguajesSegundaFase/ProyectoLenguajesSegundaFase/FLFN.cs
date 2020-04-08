@@ -50,12 +50,30 @@ namespace ProyectoLenguajesSegundaFase
             }
             else
             {
+                var A = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+                var cont = 0;
                 foreach (string cadena in ListaTokens)
                 {
                     if(cadena.Contains("DIGITO")|| cadena.Contains("LETRA")|| cadena.Contains("CHARSET"))
                     {
                         error = true;
                         break;
+                    }
+                    foreach(char caracter in cadena)
+                    {
+                        if (A.Contains(caracter))
+                        {
+                            cont++;
+                        }
+                        else
+                        {
+                            cont = 0;
+                        }
+                        if (cont > 1)
+                        {
+                            error = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -140,12 +158,7 @@ namespace ProyectoLenguajesSegundaFase
         {
             if(aux.Contains("RESERVADAS"))
             {
-                aux = aux.Replace("RESERVADAS()", " ");
-            }
-            if(aux.Contains('{'))
-            {
-                aux = aux.Replace('{', ' ');
-                aux = aux.Replace('}', ' ');
+                aux = aux.Replace("{ RESERVADAS() }", " ");
             }
             var caracter = "'";
             string Exp = string.Empty;
@@ -167,7 +180,7 @@ namespace ProyectoLenguajesSegundaFase
                             }
                             else
                             {
-                                if (Exp[Exp.Length-1]!='.')
+                                if (Exp[Exp.Length-1]!='.'&& Exp[Exp.Length - 1] != '|')
                                 {
                                     Exp += "." + aux[i];
                                 }

@@ -40,6 +40,8 @@
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label2 = new System.Windows.Forms.Label();
             this.estado = new System.Windows.Forms.DataGridView();
+            this.button1 = new System.Windows.Forms.Button();
+            this.Expr = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.FLN1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Follow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.estado)).BeginInit();
@@ -49,11 +51,10 @@
             // 
             this.pantalla1.FormattingEnabled = true;
             this.pantalla1.ItemHeight = 16;
-            this.pantalla1.Location = new System.Drawing.Point(12, 34);
+            this.pantalla1.Location = new System.Drawing.Point(12, 58);
             this.pantalla1.Name = "pantalla1";
             this.pantalla1.Size = new System.Drawing.Size(386, 516);
             this.pantalla1.TabIndex = 0;
-            //this.pantalla1.SelectedIndexChanged += new System.EventHandler(this.pantalla1_SelectedIndexChanged);
             // 
             // FLN1
             // 
@@ -63,7 +64,7 @@
             this.First,
             this.Last,
             this.Nullable});
-            this.FLN1.Location = new System.Drawing.Point(404, 34);
+            this.FLN1.Location = new System.Drawing.Point(404, 58);
             this.FLN1.Name = "FLN1";
             this.FLN1.RowHeadersWidth = 51;
             this.FLN1.Size = new System.Drawing.Size(851, 516);
@@ -100,7 +101,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(497, 9);
+            this.label1.Location = new System.Drawing.Point(401, 38);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(179, 17);
             this.label1.TabIndex = 2;
@@ -112,7 +113,7 @@
             this.Follow.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.Column2});
-            this.Follow.Location = new System.Drawing.Point(1276, 34);
+            this.Follow.Location = new System.Drawing.Point(1276, 58);
             this.Follow.Name = "Follow";
             this.Follow.RowHeadersWidth = 51;
             this.Follow.RowTemplate.Height = 24;
@@ -136,7 +137,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1273, 9);
+            this.label2.Location = new System.Drawing.Point(1273, 38);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(87, 17);
             this.label2.TabIndex = 4;
@@ -152,11 +153,31 @@
             this.estado.Size = new System.Drawing.Size(1755, 411);
             this.estado.TabIndex = 5;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1793, 527);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(101, 35);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "CrearArbol";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // Expr
+            // 
+            this.Expr.AutoSize = true;
+            this.Expr.Location = new System.Drawing.Point(12, 9);
+            this.Expr.Name = "Expr";
+            this.Expr.Size = new System.Drawing.Size(0, 17);
+            this.Expr.TabIndex = 7;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1779, 1000);
+            this.ClientSize = new System.Drawing.Size(1924, 1019);
+            this.Controls.Add(this.Expr);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.estado);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.Follow);
@@ -165,6 +186,7 @@
             this.Controls.Add(this.pantalla1);
             this.Name = "Form2";
             this.Text = "Form2";
+            this.Load += new System.EventHandler(this.Form2_Load);
             ((System.ComponentModel.ISupportInitialize)(this.FLN1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Follow)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.estado)).EndInit();
@@ -187,5 +209,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridView estado;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label Expr;
     }
 }
