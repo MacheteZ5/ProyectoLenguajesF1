@@ -28,21 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pnlArea = new System.Windows.Forms.Panel();
+            this.Area = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.Area.SuspendLayout();
             this.SuspendLayout();
             // 
-            // pnlArea
+            // Area
             // 
-            this.pnlArea.AutoScroll = true;
-            this.pnlArea.AutoSize = true;
-            this.pnlArea.BackColor = System.Drawing.Color.White;
-            this.pnlArea.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlArea.Location = new System.Drawing.Point(0, 0);
-            this.pnlArea.Margin = new System.Windows.Forms.Padding(4);
-            this.pnlArea.Name = "pnlArea";
-            this.pnlArea.Size = new System.Drawing.Size(1924, 987);
-            this.pnlArea.TabIndex = 17;
+            this.Area.AutoScroll = true;
+            this.Area.AutoSize = true;
+            this.Area.BackColor = System.Drawing.Color.White;
+            this.Area.Controls.Add(this.button2);
+            this.Area.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Area.Location = new System.Drawing.Point(0, 0);
+            this.Area.Margin = new System.Windows.Forms.Padding(4);
+            this.Area.Name = "Area";
+            this.Area.Size = new System.Drawing.Size(1924, 987);
+            this.Area.TabIndex = 17;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(1223, 12);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(226, 35);
+            this.button2.TabIndex = 19;
+            this.button2.Text = "Retornar A Seleccionar Archivo";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
@@ -60,16 +73,18 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1924, 987);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.pnlArea);
+            this.Controls.Add(this.Area);
             this.Name = "Form3";
             this.Text = "Form3";
+            this.Area.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Panel pnlArea;
+        private System.Windows.Forms.Panel Area;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }

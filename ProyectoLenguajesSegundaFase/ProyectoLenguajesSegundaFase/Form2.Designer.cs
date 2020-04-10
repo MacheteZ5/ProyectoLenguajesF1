@@ -42,6 +42,7 @@
             this.estado = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
             this.Expr = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.FLN1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Follow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.estado)).BeginInit();
@@ -155,7 +156,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1793, 527);
+            this.button1.Location = new System.Drawing.Point(1790, 58);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(101, 35);
             this.button1.TabIndex = 6;
@@ -171,11 +172,22 @@
             this.Expr.Size = new System.Drawing.Size(0, 17);
             this.Expr.TabIndex = 7;
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(1773, 117);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(139, 68);
+            this.button2.TabIndex = 8;
+            this.button2.Text = "Retornar A Seleccionar Archivo";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1924, 1019);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.Expr);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.estado);
@@ -211,5 +223,6 @@
         private System.Windows.Forms.DataGridView estado;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label Expr;
+        private System.Windows.Forms.Button button2;
     }
 }

@@ -23,15 +23,18 @@ namespace ProyectoLenguajesSegundaFase
             OpenFileDialog archivo = new OpenFileDialog();
             archivo.ShowDialog();
             var File = archivo.FileName;
-            if (File[File.Length - 1] == 't' && File[File.Length - 2] == 'x' && File[File.Length - 3] == 't' && File[File.Length - 4] == '.')
+            if(File!=string.Empty)
             {
-                Form2 change = new Form2(File);
-                change.Show();
-                this.Visible = false;
-            }
-            else
-            {
-                MessageBox.Show("El archivo que seleccionó no es un archivo txt");
+                if (File[File.Length - 1] == 't' && File[File.Length - 2] == 'x' && File[File.Length - 3] == 't' && File[File.Length - 4] == '.')
+                {
+                    Form2 change = new Form2(File);
+                    change.Show();
+                    this.Visible = false;
+                }
+                else
+                {
+                    MessageBox.Show("El archivo que seleccionó no es un archivo txt");
+                }
             }
         }
     }

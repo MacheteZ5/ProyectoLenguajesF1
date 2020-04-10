@@ -7,47 +7,48 @@ using System.Drawing;
 using System.Threading;
 namespace ProyectoLenguajesSegundaFase
 {
-    public class Circulo
+    public class Figura
     {
-        private Color myColor;
-        private string Nombre;
-        private Point Posicion;
-        public Circulo(string Cadena, int PosX, int PosY)
+        private Color Color;
+        private Point Pos;
+        private string simbolo;
+        
+        public Figura(string Cadena, int PX, int PY)
         {
-            Nombre = Cadena;
-            myColor = Color.Navy;
-            Posicion = new Point(PosX, PosY);
+            simbolo = Cadena;
+            Color = Color.LightGreen;
+            Pos = new Point(PX, PY);
         }
 
-        public void Dibujar(Graphics Canvas)
+        public void Crear(Graphics figura)
         {
-            Brush brush = new SolidBrush(myColor);
-            Brush brushstring = new SolidBrush(Color.White);
+            Brush CS = new SolidBrush(Color.Black);
+            Brush C = new SolidBrush(Color);
             Font fuente = new Font("Arial", 10, FontStyle.Bold);
-            RectangleF rec = new RectangleF(Posicion.X, Posicion.Y, 40, 20);
-            Canvas.FillEllipse(brush, rec);
-            Canvas.DrawString(Nombre, fuente, brushstring, Posicion.X +10, Posicion.Y + 3);
+            RectangleF RF = new RectangleF(Pos.X, Pos.Y, 40, 20);
+            figura.FillEllipse(C, RF);
+            figura.DrawString(simbolo, fuente, CS, Pos.X +10, Pos.Y + 3);
         }
     }
-    public class Linea
+    public class Union
     {
-        static Point PosicionIni = new Point();
-        static Point PosicionFin = new Point();
-        Color myColor;
+        static Point PosI = new Point();
+        static Point PosF = new Point();
+        Color Color;
 
-        public Linea(int PosXI, int PosYI, int PosXF, int PosYF)
+        public Union(int PosXI, int PosYI, int PosXF, int PosYF)
         {
-            PosicionIni.X = PosXI;
-            PosicionIni.Y = PosYI;
-            PosicionFin.X = PosXF;
-            PosicionFin.Y = PosYF;
-            myColor = Color.DarkBlue;
+            PosI.X = PosXI;
+            PosI.Y = PosYI;
+            PosF.X = PosXF;
+            PosF.Y = PosYF;
+            Color = Color.Black;
         }
 
-        public void Dibujar(Graphics Canvas)
+        public void Crear(Graphics linea)
         {
-            Pen Lapiz = new Pen(myColor);
-            Canvas.DrawLine(Lapiz, PosicionIni.X, PosicionIni.Y, PosicionFin.X, PosicionFin.Y);
+            Pen pen = new Pen(Color);
+            linea.DrawLine(pen, PosI.X, PosI.Y, PosF.X, PosF.Y);
         }
     }
     public class TreeAux

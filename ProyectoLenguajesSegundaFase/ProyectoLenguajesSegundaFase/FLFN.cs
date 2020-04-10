@@ -43,6 +43,8 @@ namespace ProyectoLenguajesSegundaFase
             var dic = new Dictionary<string, char>();
             var error = false;
             var final = "((";
+            var A = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+            var cont = 0;
             if (SAux.Count() != 0)
             {
                 SAux.Remove(SAux[0]);
@@ -50,29 +52,35 @@ namespace ProyectoLenguajesSegundaFase
             }
             else
             {
-                var A = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
-                var cont = 0;
                 foreach (string cadena in ListaTokens)
                 {
-                    if(cadena.Contains("DIGITO")|| cadena.Contains("LETRA")|| cadena.Contains("CHARSET"))
+                    var igual = false;
+                    if (cadena.Contains("DIGITO") || cadena.Contains("LETRA") || cadena.Contains("CHARSET"))
                     {
                         error = true;
                         break;
                     }
-                    foreach(char caracter in cadena)
+                    foreach (char caracter in cadena)
                     {
-                        if (A.Contains(caracter))
+                        if (caracter == '=')
                         {
-                            cont++;
+                            igual = true;
                         }
-                        else
+                        if (igual)
                         {
-                            cont = 0;
-                        }
-                        if (cont > 1)
-                        {
-                            error = true;
-                            break;
+                            if (A.Contains(caracter))
+                            {
+                                cont++;
+                            }
+                            else
+                            {
+                                cont = 0;
+                            }
+                            if (cont > 1)
+                            {
+                                error = true;
+                                break;
+                            }
                         }
                     }
                 }
@@ -101,34 +109,88 @@ namespace ProyectoLenguajesSegundaFase
                         Final.Add(cadena);
                     }
                 }
-                //concatenar todo en una frase
-                Expression = string.Empty;
-                foreach (string frase in Final)
+                foreach(string cadena in Final)
                 {
-                    Expression += Concatenar(frase);
-                    Expression += '|';
-                }
-                Expression = Expression.Trim('|');
-                for (int i = 0; i < Expression.Length; i++)
-                {
-                    var aux = dic.FirstOrDefault(x => x.Value == Expression[i]).Value;
-                    var aus = dic.FirstOrDefault(x => x.Value == Expression[i]).Key;
-                    if (i < Expression.Length - 1)
+                    var aux = string.Empty;
+                    if (cadena.Contains("RESERVADAS"))
                     {
-                        if (Expression[i] == aux && Expression[i + 1] != nuevo[0])
+                        aux = cadena.Replace("{ RESERVADAS() }", " ");
+                    }
+                    cont = 0;
+                    if (aux != string.Empty)
+                    {
+                        foreach (char caracter in aux)
                         {
-                            var reserva = dic.FirstOrDefault(x => x.Value == Expression[i]).Key;
-                            final += reserva;
+                            if (A.Contains(caracter))
+                            {
+                                cont++;
+                            }
+                            else
+                            {
+                                cont = 0;
+                            }
+                            if (cont > 1)
+                            {
+                                error = true;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (char caracter in cadena)
+                        {
+                            if (A.Contains(caracter))
+                            {
+                                cont++;
+                            }
+                            else
+                            {
+                                cont = 0;
+                            }
+                            if (cont > 1)
+                            {
+                                error = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (!error)
+                {
+                    //concatenar todo en una frase
+                    Expression = string.Empty;
+                    foreach (string frase in Final)
+                    {
+                        Expression += Concatenar(frase);
+                        Expression += '|';
+                    }
+                    Expression = Expression.Trim('|');
+                    for (int i = 0; i < Expression.Length; i++)
+                    {
+                        var aux = dic.FirstOrDefault(x => x.Value == Expression[i]).Value;
+                        var aus = dic.FirstOrDefault(x => x.Value == Expression[i]).Key;
+                        if (i < Expression.Length - 1)
+                        {
+                            if (Expression[i] == aux && Expression[i + 1] != nuevo[0])
+                            {
+                                var reserva = dic.FirstOrDefault(x => x.Value == Expression[i]).Key;
+                                final += reserva;
+                            }
+                            else
+                            {
+                                final += Expression[i];
+                            }
                         }
                         else
                         {
                             final += Expression[i];
                         }
                     }
-                    else
-                    {
-                        final += Expression[i];
-                    }
+                }
+                else
+                {
+                    return string.Empty;
                 }
             }
             else
@@ -156,7 +218,7 @@ namespace ProyectoLenguajesSegundaFase
         }
         private string Concatenar(string aux)
         {
-            if(aux.Contains("RESERVADAS"))
+            if (aux.Contains("RESERVADAS"))
             {
                 aux = aux.Replace("{ RESERVADAS() }", " ");
             }
@@ -166,9 +228,30 @@ namespace ProyectoLenguajesSegundaFase
             {
                 if ((aux[i] != ' ') && (!"    \t".Contains(aux[i])))
                 {
-                    if (aux[i] != '*' && aux[i] != '+' && aux[i] != '|' && aux[i] != ')' && aux[i] != '(' && aux[i] != caracter[0])
+                    if (aux[i] != '*' && aux[i] != '+' && aux[i] != '|' && aux[i] != ')' && aux[i] != '(' && aux[i] != caracter[0] && aux[i] != '?')
                     {
-                        Exp += aux[i] + ".";
+                        if (i > 0)
+                        {
+                            if (Exp[Exp.Length - 1] != '*' && Exp[Exp.Length - 1] != '+' && Exp[Exp.Length - 1] != caracter[0] && Exp[Exp.Length - 1] != ')')
+                            {
+                                Exp += aux[i] + ".";
+                            }
+                            else
+                            {
+                                if (Exp[Exp.Length - 1] != '|')
+                                {
+                                    Exp += "." + aux[i] + ".";
+                                }
+                                else
+                                {
+                                    Exp += aux[i] + ".";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Exp += aux[i] + ".";
+                        }
                     }
                     else
                     {
@@ -194,12 +277,37 @@ namespace ProyectoLenguajesSegundaFase
                         {
                             if (aux[i] == caracter[0] && i != aux.Length - 1)
                             {
-                                Exp += aux[i];
-                                i++;
-                                Exp += aux[i];
-                                i++;
-                                Exp += aux[i];
-                                Exp += '.';
+                                if(Exp.Length!=0)
+                                {
+                                    if (Exp[Exp.Length - 1] == '*' || Exp[Exp.Length - 1]== '+' || Exp[Exp.Length - 1] == '?')
+                                    {
+                                        Exp += ".";
+                                        Exp += aux[i];
+                                        i++;
+                                        Exp += aux[i];
+                                        i++;
+                                        Exp += aux[i];
+                                        Exp += '.';
+                                    }
+                                    else
+                                    {
+                                        Exp += aux[i];
+                                        i++;
+                                        Exp += aux[i];
+                                        i++;
+                                        Exp += aux[i];
+                                        Exp += '.';
+                                    }
+                                }
+                                else
+                                {
+                                    Exp += aux[i];
+                                    i++;
+                                    Exp += aux[i];
+                                    i++;
+                                    Exp += aux[i];
+                                    Exp += '.';
+                                }
                             }
                             else
                             {
@@ -273,7 +381,7 @@ namespace ProyectoLenguajesSegundaFase
             else
             {
                 Actual.elemento.First = (Actual.elemento.caracter == "*" || Actual.elemento.caracter == "+" || Actual.elemento.caracter == "?") ? Actual.hijoIZ.elemento.First : (Actual.elemento.caracter == "|") ? Actual.hijoIZ.elemento.First + "," + Actual.hijoDR.elemento.First : (Actual.elemento.caracter == "." && Actual.hijoIZ.elemento.Null) ? Actual.hijoIZ.elemento.First + "," + Actual.hijoDR.elemento.First : (Actual.elemento.caracter == "." && !Actual.hijoIZ.elemento.Null) ? Actual.hijoIZ.elemento.First : string.Empty;
-                Actual.elemento.Last = (Actual.elemento.caracter == "*" || Actual.elemento.caracter == "+" || Actual.elemento.caracter == "?") ? Actual.hijoIZ.elemento.Last : (Actual.elemento.caracter == "|") ? Actual.hijoIZ.elemento.Last + "," + Actual.hijoDR.elemento.Last : (Actual.elemento.caracter == "." && Actual.hijoDR.elemento.Null) ? Actual.hijoIZ.elemento.Last + "," + Actual.hijoDR.elemento.Last : (Actual.elemento.caracter == "." && !Actual.hijoIZ.elemento.Null) ? Actual.hijoDR.elemento.Last : string.Empty;
+                Actual.elemento.Last = (Actual.elemento.caracter == "*" || Actual.elemento.caracter == "+" || Actual.elemento.caracter == "?") ? Actual.hijoIZ.elemento.Last : (Actual.elemento.caracter == "|") ? Actual.hijoIZ.elemento.Last + "," + Actual.hijoDR.elemento.Last : (Actual.elemento.caracter == "." && Actual.hijoDR.elemento.Null) ? Actual.hijoIZ.elemento.Last + "," + Actual.hijoDR.elemento.Last : (Actual.elemento.caracter == "." && !Actual.hijoDR.elemento.Null) ? Actual.hijoDR.elemento.Last : string.Empty;
                 Actual.elemento.Null = (Actual.elemento.caracter == "*" || Actual.elemento.caracter == "?") ? true : (Actual.elemento.caracter == "|" && (Actual.hijoIZ.elemento.Null || Actual.hijoDR.elemento.Null)) ? true : (Actual.elemento.caracter == "." && Actual.hijoDR.elemento.Null && Actual.hijoIZ.elemento.Null) ? true : (Actual.elemento.caracter == "+" && Actual.elemento.Null) ? true : false;
             }
         }
@@ -292,20 +400,23 @@ namespace ProyectoLenguajesSegundaFase
             else
             {
                 var vector = Actual.hijoIZ.elemento.Last.Split(',');
-                if (vector.Length != 0 && vector[0] != "")
+                if (vector.Length != 0)
                 {
                     for (int i = 0; i < vector.Length; i++)
                     {
-                        var x = Convert.ToInt32(vector[i]);
-                        if (Actual.elemento.caracter == ".")
+                        if (vector[i] != "")
                         {
-                            diccionario[x] = (!diccionario[x].Contains(Actual.hijoDR.elemento.First)) ? diccionario[x] + Actual.hijoDR.elemento.First + "," : diccionario[x];
-                        }
-                        else
-                        {
-                            if (Actual.elemento.caracter == "*" || Actual.elemento.caracter == "+")
+                            var x = Convert.ToInt32(vector[i]);
+                            if (Actual.elemento.caracter == ".")
                             {
-                                diccionario[x] = (!diccionario[x].Contains(Actual.hijoIZ.elemento.First)) ? diccionario[x] + Actual.hijoIZ.elemento.First + "," : diccionario[x];
+                                diccionario[x] = (!diccionario[x].Contains(Actual.hijoDR.elemento.First)) ? diccionario[x] + Actual.hijoDR.elemento.First + "," : diccionario[x];
+                            }
+                            else
+                            {
+                                if (Actual.elemento.caracter == "*" || Actual.elemento.caracter == "+")
+                                {
+                                    diccionario[x] = (!diccionario[x].Contains(Actual.hijoIZ.elemento.First)) ? diccionario[x] + Actual.hijoIZ.elemento.First + "," : diccionario[x];
+                                }
                             }
                         }
                     }
@@ -375,11 +486,53 @@ namespace ProyectoLenguajesSegundaFase
                 {
                     if (matrix[i] != "")
                     {
-                       if(!c.Contains(matrix[i]))
-                       {
+                        var ordenar = matrix[i].Split(',');
+                        if (ordenar.Length > 1)
+                        {
+                            var OAux = new int[ordenar.Length];
+                            int r = 0;
+                            foreach(string cadena in ordenar)
+                            {
+                                if (cadena != string.Empty)
+                                {
+                                    OAux[r] = Convert.ToInt32(cadena);
+                                    r++;
+                                }
+                            }
+                            for(int o = 1; o < OAux.Length; o++)
+                            {
+                                for (int t = 0; t < OAux.Length-1; t++)
+                                {
+                                    if (OAux[o] < OAux[t])
+                                    {
+                                        var m = OAux[o];
+                                        OAux[o] = OAux[t];
+                                        OAux[t] = m;
+                                    }
+                                }
+                            }
+                            //eliminar repetidos
+                            for (int o = 1; o < OAux.Length; o++)
+                            {
+                                if (OAux[o - 1] == OAux[o])
+                                {
+                                    OAux[o - 1] = 0;
+                                }   
+                            }
+                            matrix[i] = string.Empty;
+                            for(int s = 0; s < OAux.Length; s++)
+                            {
+                                if (OAux[s] != 0&&!matrix.Contains(Convert.ToString(OAux[s])))
+                                {
+                                    matrix[i] += OAux[s]+",";
+                                }
+                            }
+                        }
+                        if (!c.Contains(matrix[i]))
+                        {
                             c.Add(matrix[i]);
                             dic.Add(matrix[i], null);
-                       }
+                        }
                     }
                 }
             }
