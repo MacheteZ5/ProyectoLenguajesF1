@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proyecto_1229918_Montenegro
+namespace ProyectoLenguajesSegundaFase
 {
     public class AuxClass
     {
-        //desde aquí
         public void LecturaArchivo(string File, List<string> StringList, ref List<ListNode> ListaSets, ref List<ListNode> ListaTokens, ref List<ListNode> ListaActions, ref List<ListNode> ListaErrors, ref bool sets, ref List<string> TAux, ref List<string> SAux)
         {
             var EsSETS = false;
@@ -115,7 +114,7 @@ namespace Proyecto_1229918_Montenegro
         void PopPilaT(ref Stack<Node> PS, ref Stack<char> PT)
         {
             var caracterAux = ' ';
-            while (caracterAux != '('&&PT.Count()!=0)
+            while (caracterAux != '(' && PT.Count() != 0)
             {
                 caracterAux = PT.Pop();
                 if (caracterAux != '(')
@@ -160,7 +159,7 @@ namespace Proyecto_1229918_Montenegro
                         }
                         else
                         {
-                            if (caracter == '*' || caracter == '+'|| caracter == '?')
+                            if (caracter == '*' || caracter == '+' || caracter == '?')
                             {
                                 var carct = string.Empty;
                                 carct += caracter;
@@ -169,7 +168,7 @@ namespace Proyecto_1229918_Montenegro
                             }
                             else
                             {
-                                if (PT.Count()>0)
+                                if (PT.Count() > 0)
                                 {
                                     if ((PT.First() == '.' && caracter == '.') || (PT.First() == '|' && caracter == '|'))
                                     {
@@ -218,16 +217,16 @@ namespace Proyecto_1229918_Montenegro
             var X = string.Empty;
             var contador = 0;
             var nuevo = "'";
-            for(int i = 0; i < Exp.Length; i++)
+            for (int i = 0; i < Exp.Length; i++)
             {
                 if (Exp[i] == nuevo[0])
                 {
                     contador++;
                 }
-                if (T.Contains(Exp[i])&&(contador%2==0||contador==3))
+                if (T.Contains(Exp[i]) && (contador % 2 == 0 || contador == 3))
                 {
                     contador = 0;
-                    if(X!=string.Empty)
+                    if (X != string.Empty)
                     {
                         var carct = string.Empty;
                         carct += Exp[i];
@@ -260,7 +259,7 @@ namespace Proyecto_1229918_Montenegro
                                 {
                                     while (PT.Count() > 0)
                                     {
-                                        if ((PT.First() == '.' && Exp[i] == '.') || (PT.First() == '|' && Exp[i] == '|')|| (PT.First() == '.' && Exp[i] == '|'))
+                                        if ((PT.First() == '.' && Exp[i] == '.') || (PT.First() == '|' && Exp[i] == '|') || (PT.First() == '.' && Exp[i] == '|'))
                                         {
                                             var carcter = ' ';
                                             carcter = Exp[i];
