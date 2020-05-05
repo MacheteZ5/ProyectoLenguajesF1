@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,13 +13,21 @@ namespace ProyectoLenguajesSegundaFase
 {
     public partial class Form2 : Form
     {
+        List<string> DICTOK = new List<string>();
+        List<string> DICACT = new List<string>();
         string File = string.Empty;
         Node Ex = default;
+        Dictionary<string, string[]> DIC = new Dictionary<string, string[]>();
+        List<string> ListSimbol = new List<string>();
+        List<string> LS = new List<string>();
+        int ultimoV = 0;
+        bool Tok = false;
+        string expression = string.Empty;
+        Dictionary<int, string> TF= new Dictionary<int, string>();
         public Form2(string archivo)
         {
             InitializeComponent();
             File = archivo;
-
             //aquí debo de meter mís datos
             //terminologías que se van a utilizar
             //Terminologias SETS
@@ -73,7 +82,7 @@ namespace ProyectoLenguajesSegundaFase
             var sets = false;
             AuxClass nuevo = new AuxClass();
             FLFN flfn = new FLFN();
-            nuevo.LecturaArchivo(File, StringList, ref ListaSets, ref ListaTokens, ref ListaActions, ref ListaErrors, ref sets, ref TAux, ref SAux);
+            nuevo.LecturaArchivo(File, StringList, ref ListaSets, ref ListaTokens, ref ListaActions, ref ListaErrors, ref sets, ref TAux, ref SAux,ref DICACT);
             var error = false;
             var cantidad = 0;
 
@@ -284,11 +293,15 @@ namespace ProyectoLenguajesSegundaFase
             if (!error)
             {
                 //Generar expresión Tokens
+                Tok = false;
                 TAux.Remove(TAux[0]);
-                var Exp = flfn.ObtenerExpR(TAux, SAux);
+                DICTOK = TAux;
+                var Exp = flfn.ObtenerExpR(TAux, SAux,ref Tok);
+                LS = SAux;
                 if(Exp != string.Empty)
                 {
                     Expr.Text=(Exp);
+                    expression = Exp;
                     //crear el arbol de expresiones First, Last, Nullable
                     var Tree = new Tree();
                     Tree.Raiz = nuevo.CreateTreeP2(Exp);
@@ -303,6 +316,7 @@ namespace ProyectoLenguajesSegundaFase
                     }
                     //generar tabla follow
                     diccionario = flfn.TablaFollow(Tree.Raiz, diccionario, ref contador);
+                    TF = diccionario;
                     //generar tabla de S (tabla de estados)
                     var ListaSimbolos = new List<string>();
                     ListaSimbolos = flfn.ObtenerSímbolos(Tree.Raiz, ListaSimbolos);
@@ -370,6 +384,9 @@ namespace ProyectoLenguajesSegundaFase
                         }
                         z++;
                     }
+                    DIC = dic;
+                    ListSimbol = ListaSimbolos;
+                    ultimoV = contador;
                 }
                 else
                 {
@@ -395,6 +412,49 @@ namespace ProyectoLenguajesSegundaFase
             Form1 form = new Form1();
             form.Show();
             this.Visible = false;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Form4 form = new Form4(DIC,ListSimbol,ultimoV,LS,DICACT, Tok,DICTOK,expression);
+            form.Show();
+            this.Visible = false;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var Start = Application.StartupPath;
+            var directorio = Start + "/PROYECTOFASE3";
+            var dirección = Start + "/PROYECTOFASE3/PROYECTOFASE3/Form1.cs";
+            TerceraFase TF = new TerceraFase();
+            TF.PMétodo(dirección);
+            TF.SMétodo(dirección,DIC,ListSimbol,ultimoV,LS,DICACT,DICTOK,Tok,expression);
+            TF.TMétodo(dirección);
+            TF.CMétodo(dirección);
+            TF.QMétodo(dirección);
+            TF.SEMétodo(dirección);
+            //para guardar el archivo con un nombre nuevo
+            SaveFileDialog salvar = new SaveFileDialog();
+            salvar.ShowDialog();
+            var File = salvar.FileName;
+            var fuente = new DirectoryInfo(directorio);
+            var objetivo = new DirectoryInfo(File);
+            CopyAll(fuente,objetivo);
+        }
+        void CopyAll(DirectoryInfo source, DirectoryInfo target)
+        {
+            Directory.CreateDirectory(target.FullName);
+            //encuentra todos los archivos
+            foreach (FileInfo fi in source.GetFiles())
+            {
+                fi.CopyTo(Path.Combine(target.FullName, fi.Name), true);
+            }
+            //Encuentra todos los subdirectorios
+            foreach (DirectoryInfo diSourceSubDir in source.GetDirectories())
+            {
+                DirectoryInfo nextTargetSubDir = target.CreateSubdirectory(diSourceSubDir.Name);
+                CopyAll(diSourceSubDir, nextTargetSubDir);
+            }
         }
     }
 }
