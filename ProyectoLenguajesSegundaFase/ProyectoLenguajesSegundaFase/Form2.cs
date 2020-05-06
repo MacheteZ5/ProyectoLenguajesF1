@@ -423,23 +423,26 @@ namespace ProyectoLenguajesSegundaFase
 
         private void button4_Click(object sender, EventArgs e)
         {
-            var Start = Application.StartupPath;
-            var directorio = Start + "/PROYECTOFASE3";
-            var dirección = Start + "/PROYECTOFASE3/PROYECTOFASE3/Form1.cs";
-            TerceraFase TF = new TerceraFase();
-            TF.PMétodo(dirección);
-            TF.SMétodo(dirección,DIC,ListSimbol,ultimoV,LS,DICACT,DICTOK,Tok,expression);
-            TF.TMétodo(dirección);
-            TF.CMétodo(dirección);
-            TF.QMétodo(dirección);
-            TF.SEMétodo(dirección);
-            //para guardar el archivo con un nombre nuevo
             SaveFileDialog salvar = new SaveFileDialog();
             salvar.ShowDialog();
             var File = salvar.FileName;
-            var fuente = new DirectoryInfo(directorio);
-            var objetivo = new DirectoryInfo(File);
-            CopyAll(fuente,objetivo);
+            if (!File.Contains('.') && File != string.Empty)
+            {
+                var Start = Application.StartupPath;
+                var directorio = Start + "/PROYECTOFASE3";
+                var dirección = Start + "/PROYECTOFASE3/PROYECTOFASE3/Form1.cs";
+                TerceraFase TF = new TerceraFase();
+                TF.PMétodo(dirección);
+                TF.SMétodo(dirección, DIC, ListSimbol, ultimoV, LS, DICACT, DICTOK, Tok, expression);
+                TF.TMétodo(dirección);
+                TF.CMétodo(dirección);
+                TF.QMétodo(dirección);
+                TF.SEMétodo(dirección);
+                //para guardar el archivo con un nombre nuevo
+                var fuente = new DirectoryInfo(directorio);
+                var objetivo = new DirectoryInfo(File);
+                CopyAll(fuente, objetivo);
+            }
         }
         void CopyAll(DirectoryInfo source, DirectoryInfo target)
         {

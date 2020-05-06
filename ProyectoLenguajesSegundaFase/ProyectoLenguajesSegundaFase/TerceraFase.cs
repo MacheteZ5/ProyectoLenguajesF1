@@ -45,6 +45,8 @@ namespace ProyectoLenguajesSegundaFase
             escribir.WriteLine("string Exp = string.Empty;");
             escribir.WriteLine("private void button1_Click(object sender, EventArgs e)");
             escribir.WriteLine("      {");
+            escribir.WriteLine("var xs = string.Empty;");
+            escribir.WriteLine("var y = string.Empty;");
             escribir.WriteLine("TablaE = new Dictionary<string, string[]>();");
             escribir.WriteLine("Simbol = new List<string>();");
             escribir.WriteLine("ultimoV = string.Empty;");
@@ -84,13 +86,13 @@ namespace ProyectoLenguajesSegundaFase
                 {
                     if(cadena[1]=='"')
                     {
-                        escribir.WriteLine("var y = string.Empty;");
+                        escribir.WriteLine("y = string.Empty;");
                         escribir.WriteLine("y +=" + "'"+'"' + "'" + ";");
                         escribir.WriteLine("Simbol.Add(y);");
                     }
                     else
                     {
-                        escribir.WriteLine("var xs = " + '"' + caracter[0] + '"' + ";");
+                        escribir.WriteLine("xs = " + '"' + caracter[0] + '"' + ";");
                         escribir.WriteLine("Simbol.Add(xs);");
                     }
                 }
