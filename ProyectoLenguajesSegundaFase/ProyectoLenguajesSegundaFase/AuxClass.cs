@@ -9,7 +9,7 @@ namespace ProyectoLenguajesSegundaFase
 {
     public class AuxClass
     {
-        public void LecturaArchivo(string File, List<string> StringList, ref List<ListNode> ListaSets, ref List<ListNode> ListaTokens, ref List<ListNode> ListaActions, ref List<ListNode> ListaErrors, ref bool sets, ref List<string> TAux, ref List<string> SAux)
+        public void LecturaArchivo(string File, List<string> StringList, ref List<ListNode> ListaSets, ref List<ListNode> ListaTokens, ref List<ListNode> ListaActions, ref List<ListNode> ListaErrors, ref bool sets, ref List<string> TAux, ref List<string> SAux, ref List<string> DICACT)
         {
             var EsSETS = false;
             var EsTokens = false;
@@ -83,6 +83,7 @@ namespace ProyectoLenguajesSegundaFase
                             if (EsActions)
                             {
                                 ListaActions.Add(ListNode);
+                                DICACT.Add(ListNode.frase);
                             }
                             else
                             {
@@ -293,6 +294,90 @@ namespace ProyectoLenguajesSegundaFase
             TreeSETSNode.hijoDR = HD;
             TreeSETSNode.hijoIZ = HI;
             PS.Push(TreeSETSNode);
+        }
+
+        public Node CreateTreeP3(string Exp, string valor, ref string retornar,string valorf)
+        {
+            var Y = string.Empty;
+            var conteo = 0;
+            var T = "(.|+?*)";
+            var PT = new Stack<char>();
+            var PS = new Stack<Node>();
+            var X = string.Empty;
+            var contador = 0;
+            var nuevo = "'";
+            for (int i = 0; i < Exp.Length; i++)
+            {
+                if (Exp[i] == nuevo[0])
+                {
+                    contador++;
+                }
+                if (T.Contains(Exp[i]) && (contador % 2 == 0 || contador == 3))
+                {
+                    contador = 0;
+                    if (X != string.Empty)
+                    {
+                        conteo++;
+                        var carct = string.Empty;
+                        carct += Exp[i];
+                        var TreeSETSNode = CreateNode(X);
+                        PS.Push(TreeSETSNode);
+                        Y = X;
+                        X = string.Empty;
+                    }
+                    if (Exp[i] == '(')
+                    {
+                        PT.Push(Exp[i]);
+                    }
+                    else
+                    {
+                        if (Exp[i] == ')')
+                        {
+                            PopPilaT(ref PS, ref PT);
+                        }
+                        else
+                        {
+                            if (Exp[i] == '*' || Exp[i] == '+' || Exp[i] == '?')
+                            {
+                                var carct = string.Empty;
+                                carct += Exp[i];
+                                var TreeSETSNode = CreateNode(carct);
+                                PS = JuntarNodos(TreeSETSNode, PS);
+                            }
+                            else
+                            {
+                                if (PT.Count() > 0)
+                                {
+                                    while (PT.Count() > 0)
+                                    {
+                                        if ((PT.First() == '.' && Exp[i] == '.') || (PT.First() == '|' && Exp[i] == '|') || (PT.First() == '.' && Exp[i] == '|'))
+                                        {
+                                            var carcter = ' ';
+                                            carcter = Exp[i];
+                                            PoPPilaTP2(ref PS, ref PT, carcter);
+                                        }
+                                        else
+                                        {
+                                            PT.Push(Exp[i]);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (conteo >= Convert.ToInt32(valor) && conteo <= Convert.ToInt32(valorf))
+                    {
+                        retornar += Y + Exp[i];
+                        Y = string.Empty;
+                    }
+                }
+                else
+                {
+                    X += Exp[i];
+                }
+            }
+            return PS.Pop();
         }
     }
 }

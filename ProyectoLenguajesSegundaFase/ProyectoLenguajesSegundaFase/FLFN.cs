@@ -33,7 +33,7 @@ namespace ProyectoLenguajesSegundaFase
             }
             return List;
         }
-        public string ObtenerExpR(List<string> ListaTokens, List<string> SAux)
+        public string ObtenerExpR(List<string> ListaTokens, List<string> SAux, ref bool token)
         {
             byte Y = 65;
             var Expression = string.Empty;
@@ -114,7 +114,15 @@ namespace ProyectoLenguajesSegundaFase
                     var aux = string.Empty;
                     if (cadena.Contains("RESERVADAS"))
                     {
-                        aux = cadena.Replace("{ RESERVADAS() }", " ");
+                        token = true;
+                        if (cadena.Contains("{RESERVADAS()}"))
+                        {
+                            aux = cadena.Replace("{RESERVADAS()}", " ");
+                        }
+                        else
+                        {
+                            aux = cadena.Replace("{ RESERVADAS() }", " ");
+                        }
                     }
                     cont = 0;
                     if (aux != string.Empty)
@@ -184,7 +192,15 @@ namespace ProyectoLenguajesSegundaFase
                         }
                         else
                         {
-                            final += Expression[i];
+                            if (Expression[i] == aux)
+                            {
+                                var reserva = dic.FirstOrDefault(x => x.Value == Expression[i]).Key;
+                                final += reserva;
+                            }
+                            else
+                            {
+                                final += Expression[i];
+                            }
                         }
                     }
                 }
@@ -220,7 +236,14 @@ namespace ProyectoLenguajesSegundaFase
         {
             if (aux.Contains("RESERVADAS"))
             {
-                aux = aux.Replace("{ RESERVADAS() }", " ");
+                if(aux.Contains("{RESERVADAS()}"))
+                {
+                    aux = aux.Replace("{RESERVADAS()}", " ");
+                }
+                else
+                {
+                    aux = aux.Replace("{ RESERVADAS() }", " ");
+                }
             }
             var caracter = "'";
             string Exp = string.Empty;
@@ -439,7 +462,6 @@ namespace ProyectoLenguajesSegundaFase
             aux[3] = Actual.elemento.Null.ToString();
             matrix.Add(aux);
         }
-
         public List<string> ObtenerSímbolos(Node Actual, List<string> Lista)
         {
             if(Actual == null)
